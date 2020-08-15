@@ -1,5 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles"
-import { purple, grey } from "@material-ui/core/colors"
+import { purple, grey, deepPurple, red } from "@material-ui/core/colors"
 import PoppinsLight from "@assets/fonts/Poppins-Light.ttf"
 
 const Poppins = {
@@ -16,22 +16,25 @@ const Poppins = {
 const theme = createMuiTheme({
 	palette: {
 		primary: {
-			light: "#ffc107",
-			main: "#ff9800",
-			dark: "#f57c00",
+			light: "#97bc62ff",
+			main: "#6dd47e",
+			dark: "#00563f",
 		},
 		secondary: {
-			light: "#fe333c",
-			main: "#FE000C",
-			dark: "#b10008",
+			light: deepPurple[700],
+			main: purple[800],
+			dark: "#060b25",
 		},
 		error: {
-			main: purple[800],
+			main: red[700],
 		},
 		background: {
-			lightGrey: grey[300]
+			lightGrey: grey[300],
 		},
-		default: '#fff'
+		default: "#fff",
+	},
+	shape: {
+		borderRadius: "10px",
 	},
 	typography: {
 		fontFamily: "Poppins",
@@ -39,7 +42,8 @@ const theme = createMuiTheme({
 	overrides: {
 		MuiPaper: {
 			elevation2: {
-				boxShadow: "0 1px 3px rgba(0,0,0,.1), 0 2px 2px rgba(0,0,0,.06), 0 0 2px rgba(0,0,0,.07)",
+				boxShadow:
+					"0 1px 3px rgba(0,0,0,.1), 0 2px 2px rgba(0,0,0,.06), 0 0 2px rgba(0,0,0,.07)",
 			},
 		},
 		MuiButton: {
@@ -50,8 +54,8 @@ const theme = createMuiTheme({
 					outline: "none",
 				},
 				"&:hover": {
-					cursor: "pointer"
-				}
+					cursor: "pointer",
+				},
 			},
 			outlinedSizeSmall: {
 				padding: "5px 12px",
