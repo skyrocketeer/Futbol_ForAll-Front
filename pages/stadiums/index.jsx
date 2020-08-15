@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import axios from "@plugins/axios"
 import RoundedButton from "@components/Button/Round"
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
@@ -9,17 +9,17 @@ import { Box } from "@material-ui/core"
 const useStyles = makeStyles(theme => ({
 	wrapper: {
 		marginTop: "20px",
-		background: "black",
-		height: "100vh",
+		background: theme.palette.secondary.dark,
+		height: "293px",
 	},
 	root: {
 		flexGrow: 1,
 
 		"& a": {
-			color: "white",
+			color: theme.palette.primary.light,
 
 			"&:hover": {
-				color: theme.palette.primary.main,
+				color: theme.palette.primary.dark,
 			},
 		},
 	},
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 		fontSize: "1.3rem",
 		fontWeight: 500,
 		lineHeight: 2.4,
-		color: "white",
+		color: theme.palette.primary.main,
 	},
 }))
 
