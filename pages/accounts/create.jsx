@@ -1,12 +1,17 @@
 import { useState } from "react"
+import { useRouter } from "next/router"
+import { makeStyles } from "@material-ui/core/styles"
+import { useForm, Controller } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers"
+import * as yup from "yup"
 import clsx from "clsx"
 import axios from "axios"
 import Link from "next/link"
 import Hidden from "@material-ui/core/Hidden"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/core/styles"
 import DefaultLayout from "@components/Layout/default"
+import CustomCircularProgress from "@components/Progress/Circular"
 import Button from "@material-ui/core/Button"
 import Input from "@material-ui/core/Input"
 import InputLabel from "@material-ui/core/InputLabel"
@@ -15,6 +20,8 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import PermIdentityIcon from "@material-ui/icons/PermIdentity"
 import EmailIcon from "@material-ui/icons/Email"
+import Snackbar from "@material-ui/core/Snackbar"
+import MuiAlert from "@material-ui/lab/Alert"
 import LockIcon from "@material-ui/icons/Lock"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
@@ -42,6 +49,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	container: {
 		marginTop: "30px",
+		textAlign: "center",
 	},
 	input: {
 		"& :placeholder": {
@@ -65,10 +73,8 @@ const useStyles = makeStyles(theme => ({
 		fontSize: "14px",
 		fontWeight: 400,
 		color: "rgb(72, 72, 72)",
-		marginLeft: "5px",
 	},
 	anchor: {
-		marginLeft: "10px",
 		fontSize: "14px",
 		color: theme.palette.primary.light,
 		"&:hover": {
@@ -79,10 +85,13 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function CreateAccount() {
-	const title = "Create a new account"
+	const title = "Tạo tài khoản mới"
 	const classes = useStyles()
+	const router = useRouter()
 
-	const [newUser, setNewUser] = useState("")
+	function Alert(props) {
+		return <MuiAlert elevation={6} variant='filled' {...props} />
+	}
 
 	function RegisterForm(props) {
 		const useChildStyles = makeStyles(theme => ({
@@ -113,163 +122,236 @@ function CreateAccount() {
 					fontSize: "16px",
 				},
 			},
+			buttonSuccess: {
+				backgroundColor: theme.palette.primary.light,
+				"&:hover": {
+					backgroundColor: theme.palette.primary.main,
+				},
+			},
 		}))
 
 		const childClasses = useChildStyles(props)
 
-		const [values, setValues] = useState({
-			password: "",
-			firstName: "",
-			lastName: "",
-			email: "",
-			roleType: "",
+		const [states, setStates] = useState({
+			showPass: false,
+			loading: false,
+			success: false,
+			emailExist: false,
 		})
 
-		const [showPass, setShowPass] = useState(false)
+		let registerSchema = yup.object().shape({
+			email: yup.string().email().required(),
+			password: yup.string().required().min(6).max(12),
+			firstName: yup.string().required(),
+			lastName: yup.string().required(),
+			roleType: yup.string().required(),
+		})
 
-		const handleInputChange = name => event => {
-			setValues({ ...values, [name]: event.target.value.trim() })
-		}
+		const { register, handleSubmit, reset, control, errors } = useForm({
+			mode: "onBlur",
+			resolver: yupResolver(registerSchema),
+		})
 
-		const toggleShowPassword = () => {
-			setShowPass(!showPass)
-		}
+		function submitForm(data, e) {
+			setStates(prevState => ({
+				...prevState,
+				loading: true,
+			}))
+			//cast to int
+			data.roleType = Number(data.roleType)
 
-		const handleMouseDownPassword = event => {
-			event.preventDefault()
-		}
-
-		function submitForm(e) {
-			e.preventDefault()
-			const payload = { ...values }
+			const payload = { ...data }
 			axios
 				.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
 				.then(res => {
-					let new_user = null
-					setNewUser((new_user = res.data))
+					//progress circle
+					setStates(prevState => ({
+						...prevState,
+						loading: false,
+					}))
+					if (res.data) {
+						//reset form fields
+						e.target.reset()
+						reset({ roleType: "" })
+						setStates(prevState => ({
+							...prevState,
+							success: true,
+						}))
+
+						setTimeout(() => router.push("/"), 2000)
+					}
 				})
-				.catch(err => console.log(err.response.data.message))
+				.catch(err => {
+					if (err.response.data.statusCode === 409) {
+						setStates(prevState => ({
+							...prevState,
+							loading: false,
+							emailExist: true,
+						}))
+					}
+				})
+		}
+
+		const handleClose = (event, reason) => {
+			if (reason === "clickaway") {
+				return
+			}
+			setStates(state => ({ ...state, success: false }))
 		}
 
 		return (
-			<form
-				className='center'
-				noValidate
-				autoComplete='off'
-				className={clsx(classes.container, childClasses.root)}
-			>
-				{/* <Input
-					type='number'
-					id='input-phone'
-					label='Phone Number'
-					placeholder='Enter your phone number'
-					onChange={handleChange("phoneNumber")}
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position='start'>
-								<PhoneAndroidIcon />
-								+84
-							</InputAdornment>
-						),
-					}}
-				/> */}
-				<FormControl className={clsx(childClasses.margin, "w100")}>
-					<InputLabel htmlFor='input-mail'>Email</InputLabel>
-					<Input
-						placeholder='Enter your email'
-						values={values.email}
-						onChange={handleInputChange("email")}
-						startAdornment={
-							<InputAdornment position='start'>
-								<EmailIcon />
-							</InputAdornment>
-						}
-					/>
-				</FormControl>
-				<FormControl className={clsx(childClasses.margin, "w100")}>
-					<InputLabel htmlFor='input-password'>Password</InputLabel>
-					<Input
-						placeholder='Enter your password'
-						type={showPass ? "text" : "password"}
-						value={values.password}
-						onChange={handleInputChange("password")}
-						startAdornment={
-							<InputAdornment position='start'>
-								<LockIcon />
-							</InputAdornment>
-						}
-						endAdornment={
-							<InputAdornment position='end'>
-								<IconButton
-									aria-label='toggle password visibility'
-									onClick={toggleShowPassword}
-									onMouseDown={handleMouseDownPassword}
-								>
-									{showPass ? <Visibility /> : <VisibilityOff />}
-								</IconButton>
-							</InputAdornment>
-						}
-					/>
-				</FormControl>
-				<div
-					className={clsx(childClasses.flexInput, childClasses.margin, "d-flex", "w100")}
+			<>
+				<form
+					className='center'
+					noValidate
+					autoComplete='off'
+					className={clsx(classes.container, childClasses.root)}
+					onSubmit={handleSubmit(submitForm)}
 				>
-					<FormControl>
-						<InputLabel htmlFor='input-fname'>First name</InputLabel>
+					<FormControl className={clsx(childClasses.margin, "w100")}>
+						<InputLabel htmlFor='input-mail'>Email (bắt buộc)</InputLabel>
 						<Input
-							placeholder='Enter your first name'
-							values={values.firstName}
-							onChange={handleInputChange("firstName")}
+							placeholder='Xin hãy nhập email'
+							name='email'
+							inputRef={register}
+							error={errors.email ? true : false}
 							startAdornment={
 								<InputAdornment position='start'>
-									<AccountCircle />
+									<EmailIcon />
 								</InputAdornment>
 							}
 						/>
+						{errors.email && <div className='error__text'>{errors.email.message}</div>}
+						{states.emailExist && (
+							<div className='error__text'>Email này đã được sử dụng</div>
+						)}
 					</FormControl>
-					<FormControl>
-						<InputLabel htmlFor='input-lname'>Last name</InputLabel>
+					<FormControl className={clsx(childClasses.margin, "w100")}>
+						<InputLabel htmlFor='input-password'>Mật khẩu (bắt buộc)</InputLabel>
 						<Input
-							placeholder='Enter your last name'
-							onChange={handleInputChange("lastName")}
+							placeholder='Xin hãy nhập mật khẩu'
+							type={states.showPass ? "text" : "password"}
+							name='password'
+							inputRef={register}
+							error={errors.password ? true : false}
 							startAdornment={
 								<InputAdornment position='start'>
-									<PermIdentityIcon />
+									<LockIcon />
+								</InputAdornment>
+							}
+							endAdornment={
+								<InputAdornment position='end'>
+									<IconButton
+										aria-label='toggle password visibility'
+										onClick={() => setStates(state => ({ ...state, showPass: true }))}
+										onMouseDown={e => {
+											e.preventDefault()
+										}}
+									>
+										{states.showPass ? <Visibility /> : <VisibilityOff />}
+									</IconButton>
 								</InputAdornment>
 							}
 						/>
+						{errors.password && (
+							<div className='error__text'>{errors.password.message}</div>
+						)}
 					</FormControl>
-				</div>
-				<div className={clsx(childClasses.margin, childClasses.radio)}>
-					<InputLabel htmlFor='input-mail'>You are:</InputLabel>
-					<FormControl component='fieldset'>
-						<RadioGroup row name='role' onChange={handleInputChange("roleType")}>
-							<FormControlLabel
-								value='2'
-								control={<Radio size='small' color='primary' />}
-								label='User'
-							/>
-							<FormControlLabel
-								value='3'
-								control={<Radio size='small' color='primary' />}
-								label='Manager'
-							/>
-						</RadioGroup>
-					</FormControl>
-				</div>
-				<div className={clsx("center", classes.container)}>
-					<Button
-						size='large'
-						variant='contained'
-						color='primary'
-						type='submit'
-						onClick={submitForm}
-						className={classes.containedPrimary}
+					<div
+						className={clsx(
+							childClasses.flexInput,
+							childClasses.margin,
+							"d-flex",
+							"w100"
+						)}
 					>
-						Sign up
-					</Button>
-				</div>
-			</form>
+						<FormControl>
+							<InputLabel htmlFor='input-fname'>Tên (bắt buộc)</InputLabel>
+							<Input
+								placeholder='Xin hãy nhập tên'
+								name='firstName'
+								inputRef={register}
+								error={errors.firstName ? true : false}
+								startAdornment={
+									<InputAdornment position='start'>
+										<AccountCircle />
+									</InputAdornment>
+								}
+							/>
+							{errors.firstName && (
+								<div className='error__text'>{errors.firstName.message}</div>
+							)}
+						</FormControl>
+						<FormControl>
+							<InputLabel htmlFor='input-lname'>Họ (bắt buộc)</InputLabel>
+							<Input
+								name='lastName'
+								inputRef={register}
+								error={errors.lastName ? true : false}
+								placeholder='Xin hãy nhập họ'
+								startAdornment={
+									<InputAdornment position='start'>
+										<PermIdentityIcon />
+									</InputAdornment>
+								}
+							/>
+							{errors.lastName && (
+								<div className='error__text'>{errors.lastName.message}</div>
+							)}
+						</FormControl>
+					</div>
+					<div className={childClasses.margin}>
+						<div className={childClasses.radio}>
+							<InputLabel htmlFor='input-mail'>Bạn là:</InputLabel>
+							<Controller
+								as={
+									<RadioGroup row>
+										<FormControlLabel
+											value='2'
+											control={<Radio size='small' color='primary' />}
+											label='Người dùng'
+										/>
+										<FormControlLabel
+											value='3'
+											control={<Radio size='small' color='primary' />}
+											label='Quản lí'
+										/>
+									</RadioGroup>
+								}
+								style={{ marginLeft: "10px" }}
+								name='roleType'
+								defaultValue={""}
+								control={control}
+							/>
+						</div>
+						{errors.roleType && (
+							<div className='error__text' style={{ marginTop: "-5px" }}>
+								{errors.roleType.message}
+							</div>
+						)}
+					</div>
+					<div className={clsx("center", classes.container)}>
+						{states.loading ? (
+							<CustomCircularProgress />
+						) : (
+							<Button
+								size='large'
+								variant='contained'
+								color='primary'
+								type='submit'
+								className={classes.containedPrimary}
+							>
+								Đăng kí
+							</Button>
+						)}
+					</div>
+				</form>
+				<Snackbar open={states.success} autoHideDuration={6000} onClose={handleClose}>
+					<Alert onClose={handleClose} severity='success'>
+						Hooray, bạn đã đăng kí thành công! Hãy kiểm tra mail để kích hoạt tài khoản
+					</Alert>
+				</Snackbar>
+			</>
 		)
 	}
 
@@ -279,7 +361,7 @@ function CreateAccount() {
 				<Hidden mdDown>
 					<Grid item md={3} lg={4} className={classes.root}>
 						<Typography component='div' color='primary'>
-							Create an account
+							Tạo tài khoản mới
 						</Typography>
 					</Grid>
 				</Hidden>
@@ -317,10 +399,10 @@ function CreateAccount() {
 						<SocialSignInButton label='Continue with phone number' logo='phone' />
 					</div>
 					<Typography component='span' className={classes.body1}>
-						Already have an account?
+						Đã có tài khoản?
 					</Typography>
-					<Link href='accounts/create'>
-						<a className={classes.anchor}>Log in</a>
+					<Link href='login'>
+						<a className={classes.anchor}>Đăng nhập ngay</a>
 					</Link>
 				</Grid>
 			</Grid>
