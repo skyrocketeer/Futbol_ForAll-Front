@@ -1,29 +1,18 @@
 import { createMuiTheme } from "@material-ui/core/styles"
-import { purple, grey, deepPurple, red } from "@material-ui/core/colors"
-import PoppinsLight from "@assets/fonts/Poppins-Light.ttf"
-
-const Poppins = {
-	fontFamily: "Poppins",
-	fontStyle: "light",
-	fontWeight: 400,
-	src: `
-    local('Poppins'),
-    local('Raleway-Light'),
-    url(${PoppinsLight}) format('ttf')`,
-}
+import { grey, red } from "@material-ui/core/colors"
 
 // Create a theme instance.
 const theme = createMuiTheme({
 	palette: {
 		primary: {
-			light: "#97bc62ff",
-			main: "#6dd47e",
+			light: "#d6ed17ff",
+			main: "#d6ed17ff",
 			dark: "#00563f",
 		},
 		secondary: {
-			light: deepPurple[700],
-			main: purple[800],
-			dark: "#060b25",
+			light: "#606060ff",
+			main: "#17293c",
+			dark: "#101820FF",
 		},
 		error: {
 			main: red[700],
@@ -37,7 +26,7 @@ const theme = createMuiTheme({
 		borderRadius: "10px",
 	},
 	typography: {
-		fontFamily: "Poppins",
+		fontFamily: ["Gilroy", "Helvetica Neue"].join(","),
 	},
 	overrides: {
 		MuiPaper: {
@@ -72,11 +61,6 @@ const theme = createMuiTheme({
 					paddingLeft: "0px",
 					paddingRight: "0px",
 				},
-			},
-		},
-		MuiCssBaseline: {
-			"@global": {
-				"@font-face": [Poppins],
 			},
 		},
 	},
