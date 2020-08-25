@@ -30,6 +30,7 @@ import FormControl from "@material-ui/core/FormControl"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import SocialSignInButton from "@components/Button/Social"
+import Modal from "@components/Modal/LoginForm"
 
 const useStyles = makeStyles(theme => ({
 	wrapper: {
@@ -74,11 +75,11 @@ const useStyles = makeStyles(theme => ({
 		fontWeight: 400,
 		color: "rgb(72, 72, 72)",
 	},
-	anchor: {
+	text: {
 		fontSize: "14px",
-		color: theme.palette.primary.light,
+		cursor: "pointer",
+		color: theme.palette.secondary.dark,
 		"&:hover": {
-			color: theme.palette.primary.dark,
 			textDecoration: "underline",
 		},
 	},
@@ -88,6 +89,7 @@ function CreateAccount() {
 	const title = "Tạo tài khoản mới"
 	const classes = useStyles()
 	const router = useRouter()
+	const [modal, setModal] = useState(false)
 
 	function Alert(props) {
 		return <MuiAlert elevation={6} variant='filled' {...props} />
@@ -108,6 +110,10 @@ function CreateAccount() {
 			},
 			margin: {
 				margin: `${theme.spacing(1)}px auto`,
+			},
+			errorText: {
+				color: theme.palette.error.main,
+				marginTop: "5px",
 			},
 			radio: {
 				display: "flex",
@@ -137,6 +143,7 @@ function CreateAccount() {
 			loading: false,
 			success: false,
 			emailExist: false,
+			modal: false,
 		})
 
 		let registerSchema = yup.object().shape({
@@ -192,7 +199,7 @@ function CreateAccount() {
 				})
 		}
 
-		const handleClose = (event, reason) => {
+		const closeToast = (event, reason) => {
 			if (reason === "clickaway") {
 				return
 			}
@@ -346,8 +353,8 @@ function CreateAccount() {
 						)}
 					</div>
 				</form>
-				<Snackbar open={states.success} autoHideDuration={6000} onClose={handleClose}>
-					<Alert onClose={handleClose} severity='success'>
+				<Snackbar open={states.success} autoHideDuration={6000} onClose={closeToast}>
+					<Alert onClose={closeToast} severity='success'>
 						Hooray, bạn đã đăng kí thành công! Hãy kiểm tra mail để kích hoạt tài khoản
 					</Alert>
 				</Snackbar>
@@ -401,10 +408,15 @@ function CreateAccount() {
 					<Typography component='span' className={classes.body1}>
 						Đã có tài khoản?
 					</Typography>
-					<Link href='login'>
-						<a className={classes.anchor}>Đăng nhập ngay</a>
-					</Link>
+					<Typography
+						component='span'
+						className={classes.text}
+						onClick={() => setModal(true)}
+					>
+						Đăng nhập ngay
+					</Typography>
 				</Grid>
+				<Modal open={modal} onModalClose={() => setModal(false)} />
 			</Grid>
 		)
 	}

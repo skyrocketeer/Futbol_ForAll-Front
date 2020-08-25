@@ -5,7 +5,7 @@ import clsx from "clsx"
 
 const useStyles = makeStyles(theme => ({
 	bg: {
-		background: theme.palette.secondary.dark,
+		background: theme.palette.secondary.main,
 	},
 	logo: {
 		height: "50px",

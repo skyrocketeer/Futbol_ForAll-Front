@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, forwardRef } from "react"
 import Link from "next/link"
 import PropTypes from "prop-types"
 import Button from "@material-ui/core/Button"
@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography"
 import SocialSignInButton from "@components/Button/Social"
 import { makeStyles } from "@material-ui/core"
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
 	return <Slide direction='down' ref={ref} {...props} />
 })
 
@@ -62,9 +62,7 @@ const useStyles = makeStyles(theme => ({
 	anchor: {
 		marginLeft: "10px",
 		fontSize: "14px",
-		color: theme.palette.primary.light,
 		"&:hover": {
-			color: theme.palette.primary.dark,
 			textDecoration: "underline",
 		},
 	},

@@ -9,7 +9,7 @@ import { Box } from "@material-ui/core"
 const useStyles = makeStyles(theme => ({
 	wrapper: {
 		marginTop: "20px",
-		background: theme.palette.secondary.dark,
+		background: theme.palette.secondary.main,
 		height: "293px",
 	},
 	root: {

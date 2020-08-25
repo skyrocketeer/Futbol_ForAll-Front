@@ -100,6 +100,7 @@ function VerifyAccount() {
 	}
 
 	function handleSubmit() {
+		if(mins || secs) return 
 		alert("submitted")
 	}
 
@@ -159,19 +160,13 @@ function VerifyAccount() {
 					color='primary'
 					disableRipple
 					className={style.text}
-					disabled={mins || secs}
-					style={
-						!mins && !secs ? { cursor: "pointer", textDecoration: "underline" } : null
-					}
-					onClick={!mins && !secs ? resendOTP : null}
+					disabled={mins > 0 || secs > 0 }
+					style={!mins && !secs ? { cursor: "pointer", textDecoration: "underline" } : null}
+					onClick={resendOTP}
 				>
 					Resend code{" "}
-					{!mins && !secs ? null : `after 0${mins}:${secs < 10 ? `0${secs}` : secs} mins`}
+					{mins > 0 || secs > 0 && (`after ${mins}:${secs < 10 ? `0${secs}` : secs} mins`)}
 				</Button>
-				{/* <button href='#'>
-						
-					</button>
-				</TypographyButton> */}
 			</CustomPaper>
 		)
 	}

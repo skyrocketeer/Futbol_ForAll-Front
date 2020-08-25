@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles"
 
 const TextColorBtn = withStyles(theme => ({
 	root: {
-		color: theme.palette.default,
+		color: theme.palette.secondary.light,
 	},
 }))(Button)
 

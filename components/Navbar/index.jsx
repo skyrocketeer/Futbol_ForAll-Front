@@ -11,7 +11,7 @@ import Modal from "@components/Modal/LoginForm"
 import { useState } from "react"
 
 const useStyles = makeStyles(theme => ({
-	orange: {
+	menuItem: {
 		color: theme.palette.primary.main,
 	},
 	menuButton: {
@@ -41,7 +41,7 @@ function Navbar() {
 		return menus.map((el, index) => (
 			<Grid item xs sm={2} key={index}>
 				<Link href={el.link}>
-					<a className={style.orange}> {el.name} </a>
+					<a className={style.menuItem}> {el.name} </a>
 				</Link>
 			</Grid>
 		))
