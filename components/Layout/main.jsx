@@ -1,31 +1,26 @@
 import Head from "next/head"
 import Header from "@components/Header"
-import Container from "@material-ui/core/Container"
-import Footer from "@components/Footer"
-import { ThemeProvider } from "@material-ui/core/styles"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import theme from "@styles/theme"
+// import Footer from "@components/Footer"
 
 function Layout(props) {
+	const { title, content } = props
+
 	return (
-		<div id='main-app'>
+		<>
 			<Head>
 				<meta
 					name='viewport'
 					content='minimum-scale=1, initial-scale=1, width=device-width'
 				/>
-				<title>new NextJs app</title>
+				<title>{title || "new NextJs app"} </title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
+			<div id='main-app'>
 				<Header />
-				<Container fixed maxWidth='lg'>
-					{props.content}
-				</Container>
-				<Footer />
-			</ThemeProvider>
-		</div>
+				<div className='w-1/4 mx-auto'>{content}</div>
+			</div>
+			{/* <Footer /> */}
+		</>
 	)
 }
 

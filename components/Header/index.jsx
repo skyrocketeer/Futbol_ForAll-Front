@@ -1,34 +1,33 @@
-import Grid from "@material-ui/core/Grid"
-import { makeStyles } from "@material-ui/core"
 import Navbar from "@components/Navbar"
-import clsx from "clsx"
-
-const useStyles = makeStyles(theme => ({
-	bg: {
-		background: theme.palette.secondary.dark,
-	},
-	logo: {
-		height: "50px",
-		width: "50px",
-		marginLeft: "100px",
-		display: "block",
-	},
-}))
+import style from "./header.module.css"
+import { useRouter } from "next/router"
 
 function Header() {
-	const style = useStyles()
+	const router = useRouter()
 
 	return (
-		<div className={clsx(style.bg, "top-nav flex elevation")}>
-			<Grid container alignItems='center'>
-				<Grid item xs sm={2}>
-					<img src='/logo.png' alt='logo' className={style.logo} />
-				</Grid>
-
-				<Grid item xs sm={10} md={9}>
-					<Navbar />
-				</Grid>
-			</Grid>
+		<div role='top-nav' className='bg-secondary'>
+			<div className='flex w-2/3 mx-auto'>
+				<div className='mt-3 mb-1 mr-8'>
+					<img className={style.logo} src='/logo.png' alt='logo' />
+				</div>
+				<Navbar />
+				<div className='flex w-1/3 justify-end items-center'>
+					<div className='text-center m-2'>
+						<button className='text-neon-main border border-neon-main hover:bg-gray-800 px-3 rounded-full'>
+							Log in
+						</button>
+					</div>
+					<div className='text-center m-2'>
+						<button
+							className='bg-neon-main text-secondary border border-secondary hover:bg-neon-light px-3 rounded-full'
+							onClick={() => router.push("/accounts/create")}
+						>
+							Sign up
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	)
 }
