@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers"
@@ -36,20 +36,47 @@ function CreateAccount() {
 			setShowPass(!showPass)
 		}
 
-		const handleMouseDownPassword = event => {
-			event.preventDefault()
-		}
+		function submitForm(data, e) {
+			setStates(prevState => ({
+				...prevState,
+				loading: true,
+			}))
 
-		function submitForm(e) {
-			e.preventDefault()
-			const payload = { ...values }
-			axios
-				.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
-				.then(res => {
-					let new_user = null
-					setNewUser((new_user = res.data))
-				})
-				.catch(err => console.log(err.response.data.message))
+			//cast to int
+			// data.roleType = Number(data.roleType)
+
+			// const payload = { ...data }
+			// axios
+			// 	.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
+			// 	.then(res => {
+			// 		//progress circle
+			// 		setStates(prevState => ({
+			// 			...prevState,
+			// 			loading: false,
+			// 		}))
+			// 		if (res.data) {
+			// 			//reset form fields
+			// 			e.target.reset()
+			// 			reset({ roleType: "" })
+			// 			setStates(prevState => ({
+			// 				...prevState,
+			// 				success: true,
+			// 			}))
+			setTimeout(() => {
+				setStates(state => ({ ...state, success: true, loading: false }))
+			}, 1500)
+			// 			setTimeout(() => router.push("/"), 500)
+			// 		}
+			// 	})
+			// 	.catch(err => {
+			// 		if (err.response.data.statusCode === 409) {
+			// 			setStates(prevState => ({
+			// 				...prevState,
+			// 				loading: false,
+			// 				emailExist: true,
+			// 			}))
+			// 		}
+			// 	})
 		}
 
 		return (
@@ -172,16 +199,13 @@ function CreateAccount() {
 								Object.keys(errors).length > 0
 									? "opacity-50 cursor-not-allowed bg-green-primary"
 									: "bg-green-primary",
-								"mt-3 focus:outline-none font-semibold text-neon-main py-3 w-full rounded-full shadow"
+								"mt-3 focus:outline-none font-semibold text-neon-main py-2 w-full rounded-full shadow"
 							)}
 						>
 							ĐĂNG KÝ
 						</button>
 					)}
 				</form>
-				<button onClick={() => setStates(prev => ({ ...prev, loading: true }))}>
-					toast
-				</button>
 				{states.loading ? <SuccessToast /> : null}
 			</>
 		)
@@ -189,28 +213,31 @@ function CreateAccount() {
 
 	function renderContent() {
 		return (
-			<>
+			<div className='bg-white rounded-lg p-4 shadow-md'>
 				<div className='block'>
 					<Link href='/'>
 						<a>
 							<img
 								src='/logo.png'
 								alt='logo'
-								width='60px'
-								height='70%'
+								width='30px'
+								height='50%'
 								className='mx-auto'
 							/>
 						</a>
 					</Link>
 				</div>
+				<div className='text-lg text-center mt-5 font-extrabold'>
+					ĐĂNG KÝ TÀI KHOẢN MỚI
+				</div>
 				<RegisterForm />
-				<div className='divider__line-through mt-4'>hoặc</div>
+				<div className='divider__line-through mt-2'>hoặc</div>
 				<div className='social__btn'>
 					<SocialSignInButton logo='facebook' label='Đăng kí bằng Facebook' />
 					<SocialSignInButton logo='google' label='Đăng kí bằng Gmail' />
 					<SocialSignInButton logo='phone' label='Đăng kí bằng số điện thoại' />
 				</div>
-			</>
+			</div>
 		)
 	}
 

@@ -1,5 +1,5 @@
 import Head from "next/head"
-// import Footer from "@components/Footer"
+import Footer from "@components/Footer"
 
 function Layout(props) {
 	const { title, content } = props
@@ -14,10 +14,14 @@ function Layout(props) {
 				<title>{title || "new NextJs app"} </title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div id='main-app'>
-				<div className='w-1/4 mt-5 mx-auto'>{content}</div>
+			<div id='main-app' className='bg-gray-facebook'>
+				<div className='w-1/4 py-10 mx-auto' role='main'>
+					{content}
+				</div>
+				<div className='bg-secondary'>
+					<Footer />
+				</div>
 			</div>
-			{/* <Footer /> */}
 		</>
 	)
 }
