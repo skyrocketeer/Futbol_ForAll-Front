@@ -1,6 +1,6 @@
 import Head from "next/head"
 import Header from "@components/Header"
-// import Footer from "@components/Footer"
+import Footer from "@components/Footer"
 
 function Layout(props) {
 	const { title, content } = props
@@ -17,9 +17,11 @@ function Layout(props) {
 			</Head>
 			<div id='main-app'>
 				<Header />
-				<div className='w-1/4 mx-auto'>{content}</div>
+				<div className='w-2/3 mx-auto my-10'>{content}</div>
+				<div className='bg-secondary'>
+					<Footer />
+				</div>
 			</div>
-			{/* <Footer /> */}
 		</>
 	)
 }

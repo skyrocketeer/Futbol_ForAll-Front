@@ -1,3 +1,4 @@
+import style from "./create.module.css"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import { useForm, Controller } from "react-hook-form"
@@ -7,7 +8,7 @@ import clsx from "clsx"
 import axios from "axios"
 import Link from "next/link"
 import DefaultLayout from "@components/Layout/default"
-import CircularProgress from "@components/Progress/Circular"
+import Spinning from "@components/Progress/Spinning"
 import SocialSignInButton from "@components/Button/Social"
 import SuccessToast from "@components/Toast/Success"
 // import Modal from "@components/Modal/LoginForm"
@@ -15,9 +16,8 @@ import SuccessToast from "@components/Toast/Success"
 function CreateAccount() {
 	const title = "Tạo tài khoản mới"
 	const router = useRouter()
-	const [modal, setModal] = useState(false)
 
-	function RegisterForm(props) {
+	function RegisterForm() {
 		const [states, setStates] = useState({
 			showPass: false,
 			loading: false,
@@ -26,30 +26,64 @@ function CreateAccount() {
 			modal: false,
 		})
 
-		const [showPass, setShowPass] = useState(false)
+		const registerSchema = yup.object().shape({
+			email: yup.string().email().required(),
+			password: yup.string().required().min(6).max(12),
+			firstName: yup.string().required(),
+			lastName: yup.string().required(),
+			roleType: yup.string().required(),
+		})
 
-		const handleInputChange = name => event => {
-			setValues({ ...values, [name]: event.target.value.trim() })
-		}
+		const { register, handleSubmit, reset, control, errors } = useForm({
+			mode: "onBlur",
+			resolver: yupResolver(registerSchema),
+		})
 
 		const toggleShowPassword = () => {
-			setShowPass(!showPass)
+			setStates(prevState => ({ ...prevState, showPass: !showPass }))
 		}
 
-		const handleMouseDownPassword = event => {
-			event.preventDefault()
-		}
+		function submitForm(data, e) {
+			setStates(prevState => ({
+				...prevState,
+				loading: true,
+			}))
 
-		function submitForm(e) {
-			e.preventDefault()
-			const payload = { ...values }
-			axios
-				.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
-				.then(res => {
-					let new_user = null
-					setNewUser((new_user = res.data))
-				})
-				.catch(err => console.log(err.response.data.message))
+			//cast to int
+			// data.roleType = Number(data.roleType)
+
+			// const payload = { ...data }
+			// axios
+			// 	.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
+			// 	.then(res => {
+			// 		//progress circle
+			// 		setStates(prevState => ({
+			// 			...prevState,
+			// 			loading: false,
+			// 		}))
+			// 		if (res.data) {
+			// 			//reset form fields
+			// 			e.target.reset()
+			// 			reset({ roleType: "" })
+			// 			setStates(prevState => ({
+			// 				...prevState,
+			// 				success: true,
+			// 			}))
+			setTimeout(() => {
+				setStates(state => ({ ...state, success: true, loading: false }))
+			}, 1500)
+			// 			setTimeout(() => router.push("/"), 500)
+			// 		}
+			// 	})
+			// 	.catch(err => {
+			// 		if (err.response.data.statusCode === 409) {
+			// 			setStates(prevState => ({
+			// 				...prevState,
+			// 				loading: false,
+			// 				emailExist: true,
+			// 			}))
+			// 		}
+			// 	})
 		}
 
 		return (
@@ -164,53 +198,60 @@ function CreateAccount() {
 							className='inline-flex items-center cursor-default justify-center mt-3 py-3 border-transparent rounded-full w-full bg-gray-300 opacity-50'
 							disabled
 						>
-							<CircularProgress withText />
+							<Spinning withText />
 						</button>
 					) : (
 						<button
 							className={clsx(
 								Object.keys(errors).length > 0
-									? "opacity-50 cursor-not-allowed bg-green-primary"
-									: "bg-green-primary",
-								"mt-3 focus:outline-none font-semibold text-neon-main py-3 w-full rounded-full shadow"
+									? "opacity-50 cursor-not-allowed bg-secondary"
+									: "bg-secondary",
+								"mt-4 focus:outline-none font-semibold text-neon-main py-2 w-full rounded-full shadow"
 							)}
 						>
 							ĐĂNG KÝ
 						</button>
 					)}
 				</form>
-				<button onClick={() => setStates(prev => ({ ...prev, loading: true }))}>
-					toast
-				</button>
-				{states.loading ? <SuccessToast /> : null}
+				{states.loading && <SuccessToast text='Hooray! Successfully created' />}
 			</>
 		)
 	}
 
 	function renderContent() {
 		return (
-			<>
-				<div className='block'>
-					<Link href='/'>
-						<a>
-							<img
-								src='/logo.png'
-								alt='logo'
-								width='60px'
-								height='70%'
-								className='mx-auto'
-							/>
-						</a>
-					</Link>
+			<div className='md:flex'>
+				<div className='hidden lg:block lg:w-2/5'>
+					<div className='block'>
+						<Link href='/'>
+							<a>
+								<img
+									src='/logo.png'
+									alt='logo'
+									width='30px'
+									height='50%'
+									className='mx-auto'
+								/>
+							</a>
+						</Link>
+					</div>
+					<div className='text-lg text-center mt-5 font-extrabold'>
+						ĐĂNG KÝ TÀI KHOẢN MỚI
+					</div>
 				</div>
-				<RegisterForm />
-				<div className='divider__line-through mt-4'>hoặc</div>
-				<div className='social__btn'>
-					<SocialSignInButton logo='facebook' label='Đăng kí bằng Facebook' />
-					<SocialSignInButton logo='google' label='Đăng kí bằng Gmail' />
-					<SocialSignInButton logo='phone' label='Đăng kí bằng số điện thoại' />
+				<div className='w-4/5 lg:w-3/5 bg-white rounded-lg py-4 px-5 shadow-lg mx-auto'>
+					<div className='lg:hidden md:block text-center text-md font-extrabold mb-3'>
+						ĐĂNG KÝ TÀI KHOẢN MỚI
+					</div>
+					<RegisterForm />
+					<div className='divider__line-through mt-3'>hoặc</div>
+					<div className={style.socialBtn}>
+						<SocialSignInButton logo='facebook' label='Đăng kí bằng Facebook' />
+						<SocialSignInButton logo='google' label='Đăng kí bằng Gmail' />
+						<SocialSignInButton logo='phone' label='Đăng kí bằng số điện thoại' />
+					</div>
 				</div>
-			</>
+			</div>
 		)
 	}
 
