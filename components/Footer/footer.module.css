@@ -1,0 +1,6 @@
+.footer__menuItem:not(:first-child) {
+  margin-left: 60px;
+}
+.footer__height {
+  height: 220px;
+}

@@ -4,7 +4,12 @@ import clsx from "clsx"
 
 function Footer() {
 	return (
-		<div className='justify-start w-1/2 mx-auto py-4 text-sm text-neon-main'>
+		<div
+			className={clsx(
+				style.footer__height,
+				"justify-start w-1/2 mx-auto mt-4 py-8 text-sm text-neon-main"
+			)}
+		>
 			<div className='flex' role='footer'>
 				<ul className={clsx("flex flex-col", style.footer__menuItem)}>
 					<li>
