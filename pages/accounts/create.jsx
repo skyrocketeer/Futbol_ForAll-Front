@@ -1,5 +1,5 @@
 import style from "./create.module.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers"
@@ -34,14 +34,23 @@ function CreateAccount() {
 			roleType: yup.string().required(),
 		})
 
-		const { register, handleSubmit, reset, control, errors } = useForm({
+		const { register, watch, handleSubmit, reset, control, errors } = useForm({
 			mode: "onBlur",
 			resolver: yupResolver(registerSchema),
 		})
 
+		const watchEmail = watch("email")
+
 		const toggleShowPassword = () => {
 			setStates(prevState => ({ ...prevState, showPass: !showPass }))
 		}
+
+		//hide email existed error when user inputs new one
+		useEffect(() => {
+			if (states.emailExist) {
+				states.emailExist = false
+			}
+		}, [watchEmail])
 
 		function submitForm(data, e) {
 			setStates(prevState => ({
@@ -50,40 +59,41 @@ function CreateAccount() {
 			}))
 
 			//cast to int
-			// data.roleType = Number(data.roleType)
+			data.roleType = Number(data.roleType)
 
-			// const payload = { ...data }
-			// axios
-			// 	.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
-			// 	.then(res => {
-			// 		//progress circle
-			// 		setStates(prevState => ({
-			// 			...prevState,
-			// 			loading: false,
-			// 		}))
-			// 		if (res.data) {
-			// 			//reset form fields
-			// 			e.target.reset()
-			// 			reset({ roleType: "" })
-			// 			setStates(prevState => ({
-			// 				...prevState,
-			// 				success: true,
-			// 			}))
-			setTimeout(() => {
-				setStates(state => ({ ...state, success: true, loading: false }))
-			}, 1500)
-			// 			setTimeout(() => router.push("/"), 500)
-			// 		}
-			// 	})
-			// 	.catch(err => {
-			// 		if (err.response.data.statusCode === 409) {
-			// 			setStates(prevState => ({
-			// 				...prevState,
-			// 				loading: false,
-			// 				emailExist: true,
-			// 			}))
-			// 		}
-			// 	})
+			const payload = { ...data }
+			axios
+				.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
+				.then(res => {
+					//progress circle
+					setStates(prevState => ({
+						...prevState,
+						loading: false,
+					}))
+					if (res.data) {
+						//reset form fields
+						e.target.reset()
+						reset({ roleType: "" })
+						// show toast then remove from DOM
+						setStates(prevState => ({ ...prevState, success: true }))
+						setTimeout(() => {
+							setStates(prevState => ({ ...prevState, success: false }))
+						}, 1200)
+
+						setTimeout(() => router.push("/"), 2000)
+					}
+				})
+				.catch(err => {
+					if (err.response.data.statusCode === 409) {
+						//reset password field
+						reset({ password: "" })
+						setStates(prevState => ({
+							...prevState,
+							emailExist: true,
+							loading: false,
+						}))
+					}
+				})
 		}
 
 		return (
@@ -201,19 +211,19 @@ function CreateAccount() {
 							<Spinning withText />
 						</button>
 					) : (
-						<button
-							className={clsx(
-								Object.keys(errors).length > 0
-									? "opacity-50 cursor-not-allowed bg-secondary"
-									: "bg-secondary",
-								"mt-4 focus:outline-none font-semibold text-neon-main py-2 w-full rounded-full shadow"
-							)}
-						>
-							ĐĂNG KÝ
-						</button>
-					)}
+							<button
+								className={clsx(
+									Object.keys(errors).length > 0
+										? "opacity-50 cursor-not-allowed bg-secondary"
+										: "bg-secondary",
+									"mt-4 focus:outline-none font-semibold text-neon-main py-2 w-full rounded-full shadow"
+								)}
+							>
+								ĐĂNG KÝ
+							</button>
+						)}
 				</form>
-				{states.loading && <SuccessToast text='Hooray! Successfully created' />}
+				{states.success && <SuccessToast text='Hooray! Successfully created' />}
 			</>
 		)
 	}
@@ -239,7 +249,7 @@ function CreateAccount() {
 						ĐĂNG KÝ TÀI KHOẢN MỚI
 					</div>
 				</div>
-				<div className='w-4/5 lg:w-3/5 bg-white rounded-lg py-4 px-5 shadow-lg mx-auto'>
+				<div className='w-4/5 lg:w-2/5 bg-white rounded-lg py-4 px-5 shadow-lg mx-auto lg:mx-0'>
 					<div className='lg:hidden md:block text-center text-md font-extrabold mb-3'>
 						ĐĂNG KÝ TÀI KHOẢN MỚI
 					</div>

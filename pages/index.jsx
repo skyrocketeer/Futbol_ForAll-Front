@@ -28,7 +28,7 @@ function HomePage() {
 		},
 		{
 			title: "Thủ tướng Abe: Tôi xin lỗi từ tận đáy lòng",
-			tags: ["news","japan","world"],
+			tags: ["news", "japan", "world"],
 			img: "abe.jpg",
 			content: "Thủ tướng Shinzo Abe cho biết ông đã giữ được sức khỏe ổn định trong gần 8 năm qua, nhưng đến tháng 6 bệnh có dấu hiệu tái phát."
 		},
@@ -46,11 +46,11 @@ function HomePage() {
 		},
 		{
 			title: 'What to eat',
-			tags: ['food', 'foodporn','pizza','mozzarella'],
+			tags: ['food', 'foodporn', 'pizza', 'mozzarella'],
 			img: 'pizza.jpg',
 			content: "It's weekend and still wondering where and what to eat? We suggest some fine dining place and if you ever feel like to practice social distancing, you can even try out at home with our recipe"
 		},
-		
+
 	]
 
 	const renderContent = () => {
@@ -65,7 +65,7 @@ function HomePage() {
 						<div className='px-6 py-2'>
 							<div className='font-bold text-xl mb-2'>{card.title}</div>
 							<p className='text-gray-700 text-base line-clamp'>
-								{card.content.trim().slice(0,150) + '...'}
+								{card.content.trim().slice(0, 150) + '...'}
 							</p>
 						</div>
 						<div className='flex flex-wrap px-4 py-2'>
