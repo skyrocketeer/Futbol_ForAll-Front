@@ -23,7 +23,7 @@ function SocialSignInButton(props) {
 	}
 
 	return (
-		<div className='flex w-full mb-3 py-2 border border-gray-400 text-gray-500 rounded-lg'>
+		<div className='flex w-full py-2 border border-gray-400 text-gray-500 rounded-lg'>
 			<div className='ml-3'>{logoType(logo)}</div>
 			<div className='mx-auto my-auto text-sm'>{label}</div>
 		</div>
