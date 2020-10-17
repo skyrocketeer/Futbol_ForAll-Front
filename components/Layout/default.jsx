@@ -1,28 +1,29 @@
 import Head from "next/head"
-import Container from "@material-ui/core/Container"
-import { ThemeProvider } from "@material-ui/core/styles"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import theme from "@styles/theme"
+import Footer from "@components/Footer"
 
-function DefaultLayout(props) {
+function Layout(props) {
 	const { title, content } = props
 
 	return (
-		<div id='main-app'>
+		<>
 			<Head>
 				<meta
 					name='viewport'
 					content='minimum-scale=1, initial-scale=1, width=device-width'
 				/>
-				<title>{title}</title>
+				<title>{title || "new NextJs app"} </title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<Container maxWidth='xl'>{content}</Container>
-			</ThemeProvider>
-		</div>
+			<div id='main-app' className='bg-gray-facebook'>
+				<div className='md:w-1/2 lg:w-3/5 py-10 md:mx-auto' role='main'>
+					{content}
+				</div>
+				<div className='bg-secondary'>
+					<Footer />
+				</div>
+			</div>
+		</>
 	)
 }
 
-export default DefaultLayout
+export default Layout
