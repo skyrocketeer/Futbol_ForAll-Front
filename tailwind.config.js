@@ -2,7 +2,11 @@ const { colors, animation } = require("tailwindcss/defaultTheme")
 const plugin = require("tailwindcss/plugin")
 
 module.exports = {
-	purge: ['@components/**/*.jsx', '@pages/**/*.jsx'],
+	future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
+  },
+	purge: ['@components/**/*.{jsx,js}', '@pages/**/*.{jsx,js}'],
 	theme: {
 		fontFamily: {
 			sans: ["Gilroy"],
