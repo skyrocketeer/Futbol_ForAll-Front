@@ -1,7 +1,7 @@
 import style from "./create.module.css"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
-import { useForm, Controller } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers"
 import * as yup from "yup"
 import clsx from "clsx"
@@ -31,10 +31,9 @@ function CreateAccount() {
 			password: yup.string().required().min(6).max(12),
 			firstName: yup.string().required(),
 			lastName: yup.string().required(),
-			roleType: yup.string().required(),
 		})
 
-		const { register, watch, handleSubmit, reset, control, errors } = useForm({
+		const { register, watch, handleSubmit, reset, errors } = useForm({
 			mode: "onBlur",
 			resolver: yupResolver(registerSchema),
 		})
@@ -58,9 +57,6 @@ function CreateAccount() {
 				loading: true,
 			}))
 
-			//cast to int
-			data.roleType = Number(data.roleType)
-
 			const payload = { ...data }
 			axios
 				.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
@@ -73,7 +69,6 @@ function CreateAccount() {
 					if (res.data) {
 						//reset form fields
 						e.target.reset()
-						reset({ roleType: "" })
 						// show toast then remove from DOM
 						setStates(prevState => ({ ...prevState, success: true }))
 						setTimeout(() => {
@@ -170,39 +165,6 @@ function CreateAccount() {
 						<div className='text-red-600'>{errors.lastName.message}</div>
 					)}
 
-					<div className='form-control__input-group mt-2'>
-						<div className='form-control__label'>
-							<label htmlFor='roleType' className='form-control__label'>
-								Bạn là?
-							</label>
-						</div>
-						<div className='relative'>
-							<Controller
-								as={
-									<select className='appearance-none w-full border border-gray-300 text-gray-700 p-2 rounded-md focus:outline-none focus:bg-white focus:shadow'>
-										<option hidden disabled value='' />
-										<option value='2' label='Người dùng' />
-										<option value='3' label='Quản lí' />
-									</select>
-								}
-								name='roleType'
-								defaultValue=''
-								control={control}
-							/>
-							<div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
-								<svg
-									className='fill-current h-4 w-4'
-									xmlns='http://www.w3.org/2000/svg'
-									viewBox='0 0 20 20'
-								>
-									<path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z' />
-								</svg>
-							</div>
-						</div>
-					</div>
-					{errors.roleType && (
-						<div className='text-red-600'>{errors.roleType.message}</div>
-					)}
 					{states.loading ? (
 						<button
 							className='inline-flex items-center cursor-default justify-center mt-3 py-3 border-transparent rounded-full w-full bg-gray-300 opacity-50'

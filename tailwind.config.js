@@ -2,11 +2,6 @@ const { colors, animation } = require("tailwindcss/defaultTheme")
 const plugin = require("tailwindcss/plugin")
 
 module.exports = {
-	future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-  },
-	purge: ['./components/**/*.{jsx,js}', './pages/**/*.{jsx,js}'],
 	theme: {
 		fontFamily: {
 			sans: ["Gilroy"],
@@ -35,26 +30,28 @@ module.exports = {
 			},
 			animation: {
 				...animation,
-				popUp: "fadein 0.5s, fadeout 0.5s 0.7s",
+				popUp: "fadein 1.5s, fadeout 0.5s 3s",
 			},
 			keyframes: {
 				fadein: {
 					from: {
-						bottom: 0,
+						right: "-165px",
 						opacity: 0,
 					},
 					to: {
-						bottom: "40px",
+						top: "300px",
+						right: 0,
 						opacity: 1,
 					},
 				},
 				fadeout: {
 					from: {
-						bottom: "40px",
+						top: "300px",
+						right: 0,
 						opacity: 1,
 					},
 					to: {
-						bottom: 0,
+						right: "-165px",
 						opacity: 0,
 					},
 				},
@@ -67,18 +64,13 @@ module.exports = {
 	plugins: [
 		plugin(function ({ addUtilities }) {
 			// Add your custom styles here
-			
-			/* responsive syntax example 
-			* '@media (max-width: theme("screens.sm"))': { left: "30%" },
-			*/
-			
 			const newUtil = {
 				".toast": {
-					position: "absolute" /* Sit on top of the screen */,
+					"text-align": "center" /* Centered text */,
+					position: "fixed" /* Sit on top of the screen */,
 					"z-index": 5 /* Add a z-index if needed */,
-					left: "50%",
-					bottom: "40px" /* 30px from the bottom */,
-					transform: "translateX(-50%)",
+					right: "0px",
+					top: "300px" /* 30px from the bottom */,
 				},
 				".line-clamp": {
 					display: "-webkit-box",
@@ -86,6 +78,12 @@ module.exports = {
 					"-webkit-box-orient": "vertical",
 					overflow: "hidden",
 					"text-overflow": "ellipsis",
+				},
+				".h-vh": {
+					height: "100vh",
+				},
+				".w-vw": {
+					width: "100vw",
 				},
 			}
 			addUtilities(newUtil)

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState, useRef, createRef, useEffect } from "react"
+import { useState, useRef, createRef, useEffect, useReducer } from "react"
 import TokenInput from "@components/Input/TokenInput"
 import Toast from "@components/Toast"
 import Layout from "@components/Layout/main"
@@ -31,13 +31,20 @@ function VerifyAccount() {
 		const refs = useRef(Array.from({ length: 6 }, () => createRef()))
 		
 		// create 6 input fields
-		let tokenArr = Array.from({ length: 6 }, () => "")
-		const [token, setToken] = useState(tokenArr) 
+		let initialState = Array.from({ length: 6 }, () => "")
+		const reducer = (state, action) => {
+			if (action.type === "reset")
+				return initialState
 
+			let newData = [...state]
+			newData[action.index-1] = action.value
+			return newData
+		}
+		const [token, setToken] = useReducer(reducer, initialState) 
+		
 		const [isValidated, setIsValidated] = useState(false)
-
-		let showToast = false
-		let toastType
+		const [showToast, setShowToast] = useState(false)
+		const [toastType, setToastType] = useState(1)
 
 		useEffect( () => {
 			refs.current[0].current.focus()
@@ -63,9 +70,9 @@ function VerifyAccount() {
 			}
 		}
 
-		function handleSubmit() {
+		function handleSubmit(e) {
 			if(!isValidated) return
-
+			
 			// if (mins || secs) return
 
 			const payload = {
@@ -76,18 +83,26 @@ function VerifyAccount() {
 			axios.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/otp/validate`, payload)
 			.then(res => {
 				if(res.data.status === 'OK') {
-					showToast = true
-					toastType = 1
+					setToken({ type:"reset" })
+					showToastAnimation(1)
 				}
 			})
 			.catch(err => {
-				if(err.response.status == 403 && err.response.data.errorCode === "EX5001"){
-					showToast = true
-					toastType = 2
+				if(err.response.status == 403 && err.response.data.errorCode === "EX50001"){
+					setToken({ type:"reset" })
+					showToastAnimation(2)
 				}
 			})
 		}
 		
+		function showToastAnimation(type){
+			setShowToast(true)
+			setToastType(type)
+
+			const toastTime = setTimeout(() => setShowToast(false), 3500)
+			clearTimeout(toastTime)
+		}
+
 		async function resendOTP() {
 			if(mins || secs) return 
 
@@ -98,17 +113,13 @@ function VerifyAccount() {
 		}
 
 		function handleInputChange(value, index) {
-			let newData = [...token]
-			newData[index-1] = value
-			setToken(newData)
-			
+			setToken({index,value})
 			toNextBox(value, index)
 		}
 
-
 		useEffect( () => {
 			setIsValidated(token.every(input => input !== ""))
-		},[JSON.stringify(token)])
+		},[token[5]])
 
 		return (
 			<>
@@ -168,9 +179,9 @@ function VerifyAccount() {
 							</span>
 						</div>
 					</div>
-				
 				</div>
-				{showToast && toastType == 1 ? 
+				
+				{!showToast ? null :  toastType == 1 ? 
 					<Toast type={1} text="Successfully verified"/> : <Toast type={2} text="Invalid OTP"/>
 				}
 			</>
