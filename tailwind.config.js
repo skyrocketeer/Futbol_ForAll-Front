@@ -6,7 +6,7 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
-	purge: ['@components/**/*.{jsx,js}', '@pages/**/*.{jsx,js}'],
+	purge: ['./components/**/*.{jsx,js}', './pages/**/*.{jsx,js}'],
 	theme: {
 		fontFamily: {
 			sans: ["Gilroy"],
