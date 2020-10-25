@@ -1,7 +1,9 @@
-/* purgecss start ignore */
 @import "tailwindcss/base";
+/* Write your own custom base styles here */
+
+/* Start purging... */
 @import "tailwindcss/components";
-/* purgecss end ignore */
+/* Stop purging. */
 
 .divider__line-through {
 	display: table;
@@ -41,3 +43,7 @@ button:focus {
 	font-weight: bold;
 	src: url("../public/fonts/Gilroy-Bold.woff") format("woff");
 }
+
+/* Start purging... */
+@import "tailwindcss/utilities";
+/* Stop purging. */

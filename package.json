@@ -14,16 +14,19 @@
     "axios": "^0.19.2",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-module-resolver": "^4.0.0",
+    "clsx": "^1.1.1",
     "less": "^3.11.3",
     "next": "9.4.4",
     "next-compose-plugins": "^2.2.0",
     "react": "^16.8",
-    "react-dom": "^16.8"
+    "react-dom": "^16.8",
+    "react-hook-form": "^6.9.5",
+    "yup": "^0.29.3"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.3.0",
+    "postcss-flexbugs-fixes": "4.2.1",
     "node-sass": "^4.14.1",
     "postcss-preset-env": "^6.7.0",
-    "tailwindcss": "^1.7.3"
+    "tailwindcss": "^1.7.4"
   }
 }

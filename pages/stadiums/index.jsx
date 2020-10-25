@@ -2,7 +2,7 @@
 // import axios from "@plugins/axios"
 // import RoundedButton from "@components/Button/Round"
 
-// function Stadium(props) {
+function Stadium(props) {
 // 	const [data, setData] = useState(null)
 
 // 	const payload = { phoneNumber: 9875454554, password: "test" }
@@ -27,12 +27,13 @@
 // 			.catch(err => console.log(err.response.data))
 // 	}
 
-// 	return (
-// 		<div>
-// 			<RoundedButton label='API CALL' onBtnClick={getData} />
-// 			<div>{data !== null ? data : null}</div>
-// 		</div>
-// 	)
-// }
+	return (
+        <div>new page here</div>
+		// <div>
+		// 	<RoundedButton label='API CALL' onBtnClick={getData} />
+		// 	<div>{data !== null ? data : null}</div>
+		// </div>
+	)
+}
 
-// export default Stadium
+export default Stadium

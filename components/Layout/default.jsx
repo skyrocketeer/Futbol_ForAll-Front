@@ -14,8 +14,8 @@ function Layout(props) {
 				<title>{title || "new NextJs app"} </title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<div id='main-app' className='bg-gray-facebook'>
-				<div className='md:w-1/2 lg:w-3/5 py-10 md:mx-auto' role='main'>
+			<div id='main-app' className='bg-gray-facebook h-screen'>
+				<div className='md:w-1/2 lg:w-3/5 py-10 sm:mb-6 sm:mx-auto' role='main'>
 					{content}
 				</div>
 				<div className='bg-secondary'>

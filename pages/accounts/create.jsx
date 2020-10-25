@@ -10,7 +10,7 @@ import Link from "next/link"
 import DefaultLayout from "@components/Layout/default"
 import Spinning from "@components/Progress/Spinning"
 import SocialSignInButton from "@components/Button/Social"
-import SuccessToast from "@components/Toast/Success"
+import Toast from "@components/Toast"
 // import Modal from "@components/Modal/LoginForm"
 
 function CreateAccount() {
@@ -185,7 +185,7 @@ function CreateAccount() {
 							</button>
 						)}
 				</form>
-				{states.success && <SuccessToast text='Hooray! Successfully created' />}
+				{states.success && <Toast text='Hooray! Successfully created' type={1} />}
 			</>
 		)
 	}
@@ -198,11 +198,9 @@ function CreateAccount() {
 						<Link href='/'>
 							<a>
 								<img
-									src='/logo.png'
-									alt='logo'
-									width='30px'
-									height='50%'
-									className='mx-auto'
+									src='/logo.jpg'
+									alt='starboy-logo'
+									className='mx-auto w-24 h-16'
 								/>
 							</a>
 						</Link>

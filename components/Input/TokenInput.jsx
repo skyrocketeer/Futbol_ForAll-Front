@@ -1,35 +1,53 @@
-import { useState, useEffect } from "react"
+import style from './token.module.scss'
+import clsx from 'clsx'
 
 function TokenInput(props) {
-	const { moveNext, id, forwardRef } = props
-	const [payload, setPayload] = useState({
-		value: "",
-		id: null,
-	})
+	const { id, forwardRef, propClassName, token, onTokenChange } = props
 
-	function handleInputChange(e) {
-		setPayload({
-			value: e.target.value,
-			id: e.target.id,
-		})
+	function validate(evt) {
+		const theEvent = evt || window.event
+		let key
+
+		// Handle paste
+		if (theEvent.type === 'paste') {
+			debugger
+			key = window.event.clipboardData.getData('text/plain')
+		} else {
+			// Handle key press
+			debugger
+			key = theEvent.keyCode || theEvent.which
+			key = String.fromCharCode(key)
+		}
+
+		const regex = /[0-9]|\./
+
+		if( !regex.test(key) ) {
+			theEvent.returnValue = false
+			if(theEvent.preventDefault) theEvent.preventDefault()
+		}
 	}
 
-	useEffect(() => {
-		if (moveNext) return moveNext(payload)
-	}, [payload])
+	function handleChange(e) {
+		// if(typeof e.target.value !== 'Number') return 
+		// const validated = validate(e)
+		onTokenChange(e.target.value, e.target.id)
+	}
+
+	// useEffect(() => {
+	// 	if( Object.values(payload).some( item => item ) ){
+	// 		if (moveNext) return moveNext(payload)
+	// 	}
+	// }, [payload])
 
 	return (
-		<div className='token-input__wrapper'>
-			<input
-				type='password'
-				id={id}
-				maxLength={1}
-				className='token-input'
-				onChange={handleInputChange}
-				value={payload.value}
-				ref={forwardRef}
-			/>
-		</div>
+		<input type="text" 
+			className={clsx(style.input__token, propClassName, 'bg-secondary')} 
+			onChange={handleChange}
+			value={token}
+			ref={forwardRef}
+			id={id}
+			maxLength={1}
+		/>
 	)
 }
 

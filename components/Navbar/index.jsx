@@ -1,66 +1,55 @@
 import Link from "next/link"
 // import Modal from "@components/Modal/LoginForm"
-import { useState } from "react"
+import { useRouter } from "next/router"
+import clsx from 'clsx'
 
-function Navbar() {
+
+function Navbar(props) {
+	const router = useRouter()
+	const { isOpen } = props
+
 	const menus = [
 		{ name: "Stadium", link: "/stadiums" },
 		{ name: "Teams", link: "/posts" },
 		{ name: "MyTeams", link: "/posts" },
 	]
 
-	const [isOpen, setOpenModal] = useState(false)
-
-	function openModal() {
-		setOpenModal(true)
-	}
-
-	function closeModal() {
-		setOpenModal(false)
-	}
-
 	const renderMenu = () => {
-		return menus.map((el, index) => (
-			<div className='flex-1 text-center' key={index}>
-				<Link href={el.link}>
-					<a className='text-neon-main'> {el.name} </a>
+		return (
+			<div className='sm:flex sm:justify-evenly text-neon-main font-bold sm:w-3/5'>
+				{menus.map((el, index) => (
+				<Link href={el.link} key={index}>
+					<a className='block py-1 hover:bg-gray-800'> {el.name} </a>
 				</Link>
+				))}
 			</div>
-		))
+		)
 	}
+
+	const renderButton = () =>
+		window.innerWidth >= 640 ?
+			<div className='text-center flex'>
+				<button className='text-neon-main border border-neon-main hover:bg-gray-800 px-3 mr-3 rounded-full'>
+					Log in
+				</button>
+				<button
+					className='bg-neon-main text-secondary border border-secondary hover:bg-neon-light px-3 rounded-full'
+					onClick={() => router.push("/accounts/create")}
+				>
+					Sign up
+				</button>
+			</div>
+		:
+			<div className='font-thin text-neon-main border-t border-gray-700'>
+				<div className='py-1 hover:bg-gray-800 cursor-pointer'>Login</div>
+				<div className='hover:bg-gray-800 cursor-pointer' onClick={() => router.push("/accounts/create")}>Sign up</div>
+			</div>
 
 	return (
-		<div className='flex items-center w-3/5 mx-5'>{renderMenu()}</div>
-		// <AppBar position='static' color='transparent' elevation={0}>
-		// 	<Toolbar>
-		// 		<Hidden smDown>
-		// 			<Grid container item xs sm={10}>
-		// 				{renderMenu()}
-		// 			</Grid>
-
-		// 			<Grid item container xs sm={3}>
-		// 				<Grid item md={5} lg={4} xl={3} className='center'>
-		// 					<RoundedButton label='Login' onBtnClick={openModal} />
-		// 				</Grid>
-		// 				<Grid item md={7} lg={5} xl={4} className='center'>
-		// 					<RoundedButton label='Join now' background={true} link='/accounts/create' />
-		// 				</Grid>
-		// 			</Grid>
-		// 		</Hidden>
-
-		// 		<Hidden smUp>
-		// 			<IconButton
-		// 				edge='start'
-		// 				className={style.menuButton}
-		// 				color='inherit'
-		// 				aria-label='menu'
-		// 			>
-		// 				<MenuIcon />
-		// 			</IconButton>
-		// 		</Hidden>
-		// 	</Toolbar>
-		// 	<Modal open={isOpen} onModalClose={closeModal} />
-		// </AppBar>
+		<nav className={clsx('px-2 py-2 sm:flex sm:p-0 sm:items-center sm:justify-between sm:w-full',isOpen ? 'block' : 'hidden')}>
+			{renderMenu()}
+			{renderButton()}
+		</nav>
 	)
 }
 
