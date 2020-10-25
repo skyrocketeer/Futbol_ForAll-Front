@@ -1,34 +1,31 @@
-import Navbar from "@components/Navbar"
-import style from "./header.module.css"
-import { useRouter } from "next/router"
+import HamburgerMenu from "@components/Hamburger"
+import { useState } from "react"
+import dynamic from "next/dynamic"
+
+const Navbar = dynamic(
+  () => import('@components/Navbar'),
+  { ssr: false }
+)
 
 function Header() {
-	const router = useRouter()
+	const [isMenuOpen, setMenuOpen] = useState(false)
+
+	function handleMenuState(){
+		setMenuOpen(!isMenuOpen)
+	}
 
 	return (
-		<div role='top-nav' className='bg-secondary'>
-			<div className='flex w-2/3 mx-auto'>
-				<div className='mt-3 mb-1 mr-8'>
-					<img className={style.logo} src='/logo.png' alt='logo' />
+		<header className='bg-secondary sm:flex sm:items-center sm:px-12 sm:py-3'>
+			<div className='flex items-center justify-between px-2 md:pl-24 md:pr-8 h-60px'>
+				<div className='my-2 mr-2 md:mr-6 overflow-hidden'>
+					<img className='h-8 w-16 object-cover' src='/logo.jpg' alt='starboy-logo' />
 				</div>
-				<Navbar />
-				<div className='flex w-1/3 justify-end items-center'>
-					<div className='text-center m-2'>
-						<button className='text-neon-main border border-neon-main hover:bg-gray-800 px-3 rounded-full'>
-							Log in
-						</button>
-					</div>
-					<div className='text-center m-2'>
-						<button
-							className='bg-neon-main text-secondary border border-secondary hover:bg-neon-light px-3 rounded-full'
-							onClick={() => router.push("/accounts/create")}
-						>
-							Sign up
-						</button>
-					</div>
+				<div className="sm:hidden">
+					<HamburgerMenu isOpen={isMenuOpen} toggleMenu={handleMenuState}/>
 				</div>
 			</div>
-		</div>
+			<Navbar isOpen={isMenuOpen}/>
+		</header>
 	)
 }
 
