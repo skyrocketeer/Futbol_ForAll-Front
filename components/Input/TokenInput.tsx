@@ -2,13 +2,13 @@ import style from './token.module.scss'
 import clsx from 'clsx'
 
 type Props = {
-	id: string, 
+	index: number, 
 	propClassName: string, 
 	token: number, 
 	onTokenChange: Function
 }
 
-function TokenInput({ id, propClassName, token, onTokenChange }: Props) {
+function TokenInput({ index, propClassName, token, onTokenChange }: Props) {
 
 	// function validate(evt) {
 	// 	const theEvent = evt || window.event
@@ -36,7 +36,7 @@ function TokenInput({ id, propClassName, token, onTokenChange }: Props) {
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		// if(typeof e.target.value !== 'Number') return 
 		// const validated = validate(e)
-		onTokenChange(e.target.value, parseInt(e.target.id))
+		onTokenChange(e.target)
 	}
 
 	// useEffect(() => {
@@ -50,7 +50,7 @@ function TokenInput({ id, propClassName, token, onTokenChange }: Props) {
 			className={clsx(style.input__token, propClassName, 'bg-secondary')} 
 			onChange={handleChange}
 			value={token}
-			id={id.toString()}
+			data-index={index}
 			maxLength={1}
 		/>
 	)

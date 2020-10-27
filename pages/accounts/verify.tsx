@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState, useRef, createRef, useEffect, useReducer, RefObject } from "react"
+import { useState, useEffect, useReducer } from "react"
 import TokenInput from "@components/Input/TokenInput"
 import Toast from "@components/Toast"
 import Layout from "@components/Layout/main"
@@ -26,8 +26,6 @@ function VerifyAccount(): JSX.Element {
 	}, [secs])
 
 	function renderOTPForm() {
-		const refs = useRef(Array.from({ length: 6 }, (): RefObject<HTMLInputElement> => createRef()))
-		
 		interface Action{
 			type?: string, 
 			payload?: { index: number, value: number }
@@ -51,10 +49,6 @@ function VerifyAccount(): JSX.Element {
 		const [showToast, setShowToast] = useState<boolean>(false)
 		const [toastType, setToastType] = useState<number>(1)
 
-		useEffect( () => {
-			refs.current[0].current?.focus()
-		},[])
-
 		function formatTime(mins: number, secs: number): string{
 			if(!mins && !secs)
 				return '00:00' 
@@ -70,16 +64,16 @@ function VerifyAccount(): JSX.Element {
 			return `${min}:${sec}` 
 		}
 
-		function toNextBox(value: number, index: number) {
-			const ref = refs.current
-			if(value.toString().length == 1){
-				if (index < ref.length){
-					return ref[index].current?.focus()
-				}
+		function toNextBox(target: HTMLInputElement) {
+			if(target.value.toString().length == 1){
+				let index = target.dataset.index
+				
+				if (Number(index) < 6)
+					return (target.nextElementSibling as HTMLInputElement)?.focus()
 			}
 		}
 
-		function handleSubmit(): void {
+		function handleSubmit(): Promise<void> | void {
 			if(!isValidated) return
 			
 			// if (mins || secs) return
@@ -89,7 +83,7 @@ function VerifyAccount(): JSX.Element {
 				code: parseInt(token.join(""))
 			}
 
-			axios.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/otp/validate`, payload)
+			return axios.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/otp/validate`, payload)
 			.then(res => {
 				if(res.data.status === 'OK') {
 					setToken({ type:"reset" })
@@ -121,9 +115,9 @@ function VerifyAccount(): JSX.Element {
 			setMin(0)
 		}
 
-		function handleInputChange(value: number, index: number) {
-			setToken({index,value} as Action)
-			toNextBox(value, index)
+		function handleInputChange(target : HTMLInputElement) {
+			setToken({ payload: {index: Number(target.dataset.index), value: Number(target.value)} })
+			toNextBox(target)
 		}
 
 		useEffect( () => {
@@ -150,11 +144,12 @@ function VerifyAccount(): JSX.Element {
 						</div>
 						
 						<div className='flex flex-wrap w-full justify-center'>
+							{/* @ts-ignore */}
 							{Array.from({ length: 6 }, () => "").map( (el, index) => {
 								return (
 									<TokenInput
 										propClassName='mx-2'
-										id={(index+1).toString()}
+										index={(index+1)}
 										key={index}
 										token={token[index]}
 										onTokenChange={handleInputChange}
