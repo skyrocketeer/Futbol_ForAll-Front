@@ -2,7 +2,7 @@ import style from "./create.module.css"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers"
+import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import clsx from "clsx"
 import axios from "axios"
@@ -12,6 +12,20 @@ import Spinning from "@components/Progress/Spinning"
 import SocialSignInButton from "@components/Button/Social"
 import Toast from "@components/Toast"
 // import Modal from "@components/Modal/LoginForm"
+
+interface RegisterFormInput {
+	email: string
+	firstName: string
+	lastName: string
+	password: string
+}
+
+let registerSchema = yup.object().shape({
+	email: yup.string().email().required(),
+	password: yup.string().required().min(6).max(12),
+	firstName: yup.string().required(),
+	lastName: yup.string().required(),
+})
 
 function CreateAccount() {
 	const title = "Tạo tài khoản mới"
@@ -26,23 +40,16 @@ function CreateAccount() {
 			modal: false,
 		})
 
-		const registerSchema = yup.object().shape({
-			email: yup.string().email().required(),
-			password: yup.string().required().min(6).max(12),
-			firstName: yup.string().required(),
-			lastName: yup.string().required(),
-		})
-
-		const { register, watch, handleSubmit, reset, errors } = useForm({
+		const { register, watch, handleSubmit, reset, errors } = useForm<RegisterFormInput>({
 			mode: "onBlur",
 			resolver: yupResolver(registerSchema),
 		})
 
 		const watchEmail = watch("email")
 
-		const toggleShowPassword = () => {
-			setStates(prevState => ({ ...prevState, showPass: !showPass }))
-		}
+		// const toggleShowPassword = () => {
+		// 	setStates(prevState => ({ ...prevState, showPass: !showPass }))
+		// }
 
 		//hide email existed error when user inputs new one
 		useEffect(() => {
@@ -51,15 +58,16 @@ function CreateAccount() {
 			}
 		}, [watchEmail])
 
-		function submitForm(data, e) {
+		function submitForm(data: object, e: any) {
+			e.preventDefault()
+
 			setStates(prevState => ({
 				...prevState,
 				loading: true,
 			}))
 
 			const payload = { ...data }
-			axios
-				.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
+			axios.post(`${process.env.NEXT_PUBLIC_API_BASE}/api/v1/users/new`, payload)
 				.then(res => {
 					//progress circle
 					setStates(prevState => ({
@@ -68,7 +76,7 @@ function CreateAccount() {
 					}))
 					if (res.data) {
 						//reset form fields
-						e.target.reset()
+						reset()
 						// show toast then remove from DOM
 						setStates(prevState => ({ ...prevState, success: true }))
 						setTimeout(() => {
@@ -80,8 +88,8 @@ function CreateAccount() {
 				})
 				.catch(err => {
 					if (err.response.data.statusCode === 409) {
-						//reset password field
-						reset({ password: "" })
+						// reset password field
+						reset({...data, password: "" })
 						setStates(prevState => ({
 							...prevState,
 							emailExist: true,

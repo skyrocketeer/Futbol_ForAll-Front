@@ -1,39 +1,14 @@
-// import { useState, useEffect } from "react"
-// import axios from "@plugins/axios"
-// import RoundedButton from "@components/Button/Round"
+import Layout from "@components/Layout/main"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTools } from '@fortawesome/free-solid-svg-icons'
 
-function Stadium(props) {
-// 	const [data, setData] = useState(null)
-
-// 	const payload = { phoneNumber: 9875454554, password: "test" }
-// 	useEffect(() => {
-// 		axios
-// 			.post("/api/auth/authenticate", payload)
-// 			.then(res => {
-// 				localStorage.setItem("access_token", res.data.token)
-// 				return
-// 			})
-// 			.catch(err => console.log(err.response.data))
-// 	}, [])
-
-// 	function getData() {
-// 		axios
-// 			.get("/api/auth/protected")
-// 			.then(res => {
-// 				console.log(res.data)
-// 				let newData = res.data.message
-// 				setData(newData)
-// 			})
-// 			.catch(err => console.log(err.response.data))
-// 	}
-
-	return (
-        <div>new page here</div>
-		// <div>
-		// 	<RoundedButton label='API CALL' onBtnClick={getData} />
-		// 	<div>{data !== null ? data : null}</div>
-		// </div>
+export default function Posts(){
+	const renderContent = () => (
+		<div className='flex flex-col justify-center w-full items-center h-full'>
+      <FontAwesomeIcon icon={faTools} size="6x"/>
+			<p className='text-3xl font-semibold my-10'>This page is under construction</p>
+    </div>
 	)
+	
+	return <Layout content={renderContent()} />
 }
-
-export default Stadium

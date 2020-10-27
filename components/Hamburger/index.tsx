@@ -1,10 +1,16 @@
-function HamburgerMenu(props) {
-  const { isOpen, toggleMenu } = props
+interface Props {
+  isOpen: Boolean
+  toggleMenu: Function
+}
 
-  const handleChange = () => toggleMenu()
+export default function HamburgerMenu({ isOpen, toggleMenu }: Props){
+
+  const handleChange = () : void => toggleMenu()
 
   return (
-    <button className="block text-gray-500 hover:text-white focus:text-white focus:outline-none" onClick={handleChange}>
+    <button className="block text-gray-500 hover:text-white focus:text-white focus:outline-none" 
+      onClick={handleChange}
+    >
       <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
       {isOpen ? 
         <path fillRule="evenodd" 
@@ -18,5 +24,3 @@ function HamburgerMenu(props) {
     </button>   
   )
 }
-
-export default HamburgerMenu

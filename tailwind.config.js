@@ -79,12 +79,6 @@ module.exports = {
 					overflow: "hidden",
 					"text-overflow": "ellipsis",
 				},
-				".h-vh": {
-					height: "100vh",
-				},
-				".w-vw": {
-					width: "100vw",
-				},
 			}
 			addUtilities(newUtil)
 		}),

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState, useRef, createRef, useEffect, useReducer } from "react"
+import { useState, useRef, createRef, useEffect, useReducer, RefObject } from "react"
 import TokenInput from "@components/Input/TokenInput"
 import Toast from "@components/Toast"
 import Layout from "@components/Layout/main"
@@ -7,12 +7,10 @@ import style from './verify.module.css'
 import clsx from 'clsx'
 import axios from "axios"
 
-VerifyAccount.propTypes = {}
-
-function VerifyAccount() {
+function VerifyAccount(): JSX.Element {
 	const router = useRouter()
-	const [secs, setTime] = useState(60)
-	const [mins, setMin] = useState(2)
+	const [secs, setTime] = useState<number>(59)
+	const [mins, setMin] = useState<number>(2)
 
 	useEffect(() => {
 		let timer = setTimeout(() => {
@@ -28,49 +26,60 @@ function VerifyAccount() {
 	}, [secs])
 
 	function renderOTPForm() {
-		const refs = useRef(Array.from({ length: 6 }, () => createRef()))
+		const refs = useRef(Array.from({ length: 6 }, (): RefObject<HTMLInputElement> => createRef()))
 		
+		interface Action{
+			type?: string, 
+			payload?: { index: number, value: number }
+		}
+
 		// create 6 input fields
-		let initialState = Array.from({ length: 6 }, () => "")
-		const reducer = (state, action) => {
+		let initialState: any[] = Array.from({ length: 6 }, () => "")
+		const reducer = (state: Array<number>, action: Action) => {
 			if (action.type === "reset")
 				return initialState
 
 			let newData = [...state]
-			newData[action.index-1] = action.value
+			action.payload ? newData[action.payload.index-1] = action.payload.value : null
+			
 			return newData
 		}
+
 		const [token, setToken] = useReducer(reducer, initialState) 
 		
-		const [isValidated, setIsValidated] = useState(false)
-		const [showToast, setShowToast] = useState(false)
-		const [toastType, setToastType] = useState(1)
+		const [isValidated, setIsValidated] = useState<boolean>(false)
+		const [showToast, setShowToast] = useState<boolean>(false)
+		const [toastType, setToastType] = useState<number>(1)
 
 		useEffect( () => {
-			refs.current[0].current.focus()
+			refs.current[0].current?.focus()
 		},[])
 
-		function formatTime(mins, secs){
+		function formatTime(mins: number, secs: number): string{
 			if(!mins && !secs)
 				return '00:00' 
 			
-			if (mins < 10)
-				mins = `0${mins}` 
+			let min,sec : string = ""	
 			
-			if (secs < 10)
-				secs = `0${secs}`
+			if (mins < 10) min = `0${mins}`
+			else min = mins.toString() 
 			
-			return `${mins}:${secs}` 
+			if (secs < 10) sec = `0${secs}`
+			else sec = secs.toString()
+
+			return `${min}:${sec}` 
 		}
 
-		function toNextBox(value, index) {
-			if(value.length == 1){
-				if (index < refs.current.length)
-					return refs.current[index].current.focus()
+		function toNextBox(value: number, index: number) {
+			const ref = refs.current
+			if(value.toString().length == 1){
+				if (index < ref.length){
+					return ref[index].current?.focus()
+				}
 			}
 		}
 
-		function handleSubmit(e) {
+		function handleSubmit(): void {
 			if(!isValidated) return
 			
 			// if (mins || secs) return
@@ -95,7 +104,7 @@ function VerifyAccount() {
 			})
 		}
 		
-		function showToastAnimation(type){
+		function showToastAnimation(type: number){
 			setShowToast(true)
 			setToastType(type)
 
@@ -112,8 +121,8 @@ function VerifyAccount() {
 			setMin(0)
 		}
 
-		function handleInputChange(value, index) {
-			setToken({index,value})
+		function handleInputChange(value: number, index: number) {
+			setToken({index,value} as Action)
 			toNextBox(value, index)
 		}
 
@@ -141,14 +150,13 @@ function VerifyAccount() {
 						</div>
 						
 						<div className='flex flex-wrap w-full justify-center'>
-							{Array.from({ length: 6 }, () => "").map( (el, i) => {
+							{Array.from({ length: 6 }, () => "").map( (el, index) => {
 								return (
 									<TokenInput
 										propClassName='mx-2'
-										forwardRef={refs.current[i]}
-										id={i + 1}
-										key={i}
-										token={token[i]}
+										id={(index+1).toString()}
+										key={index}
+										token={token[index]}
 										onTokenChange={handleInputChange}
 									/>
 								)
