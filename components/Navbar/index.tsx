@@ -14,7 +14,7 @@ function Navbar({ isOpen }: { isOpen: boolean }) {
 	const menus: Array<Menu> = [
 		{ name: "Stadium", link: "/stadiums" },
 		{ name: "Teams", link: "/posts" },
-		{ name: "MyTeams", link: "/posts" },
+		{ name: "MyTeams", link: "/teams" },
 	]
 
 	const renderMenu = (): JSX.Element => {
