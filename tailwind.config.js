@@ -2,9 +2,10 @@ const { colors, animation } = require("tailwindcss/defaultTheme")
 const plugin = require("tailwindcss/plugin")
 
 module.exports = {
-	purge: {
-		content: ['./pages/**/*.tsx']
-	},
+	purge:[
+		'./pages/**/*.tsx',
+		'./components/**/*.tsx'
+	],
 	theme: {
 		fontFamily: {
 			sans: ["Gilroy"],
