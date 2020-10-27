@@ -39,7 +39,7 @@ function VerifyAccount(): JSX.Element {
 
 			let newData = [...state]
 			action.payload ? newData[action.payload.index-1] = action.payload.value : null
-			
+
 			return newData
 		}
 
@@ -148,7 +148,7 @@ function VerifyAccount(): JSX.Element {
 							{Array.from({ length: 6 }, () => "").map( (el, index) => {
 								return (
 									<TokenInput
-										propClassName='mx-2'
+										propClassName='mx-1 sm:mx-2'
 										index={(index+1)}
 										key={index}
 										token={token[index]}
