@@ -1,8 +1,6 @@
-import PropTypes from "prop-types"
-
-Spinning.propTypes = {
-	withText: PropTypes.bool,
-	text: PropTypes.string,
+type SpinningProps = {
+	withText: boolean,
+	text: string,
 }
 
 Spinning.defaultProps = {
@@ -10,8 +8,7 @@ Spinning.defaultProps = {
 	text: "Processing",
 }
 
-function Spinning(props) {
-	const { text, withText } = props
+function Spinning({ text, withText } : SpinningProps) {
 	return (
 		<>
 			<svg

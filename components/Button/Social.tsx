@@ -1,17 +1,14 @@
-import PropTypes from "prop-types"
 import FacebookIcon from "@assets/svg/facebook"
 import GoogleIcon from "@assets/svg/google"
 import PhoneIcon from "@assets/svg/phone"
 
-SocialSignInButton.propTypes = {
-	label: PropTypes.string,
-	logo: PropTypes.string,
+interface SocialSignInButton {
+	label: string,
+	logo: string,
 }
 
-function SocialSignInButton(props) {
-	const { label, logo } = props
-
-	const logoType = name => {
+function SocialSignInButton({label, logo} : SocialSignInButton) {
+	const logoType = (name: string) : JSX.Element => {
 		switch (name) {
 			case "facebook":
 				return <FacebookIcon />

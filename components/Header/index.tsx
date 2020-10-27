@@ -8,9 +8,9 @@ const Navbar = dynamic(
 )
 
 function Header() {
-	const [isMenuOpen, setMenuOpen] = useState(false)
+	const [isMenuOpen, setMenuOpen] = useState<boolean>(false)
 
-	function handleMenuState(){
+	function handleMenuState(): void {
 		setMenuOpen(!isMenuOpen)
 	}
 

@@ -1,8 +1,8 @@
 import Link from "next/link"
 
-function Footer() {
+function Footer() : JSX.Element {
 	return (
-		<div className="text-sm text-neon-main bg-secondary">
+		<footer className="text-sm text-neon-main bg-secondary">
 			<div className='flex w-2/3 md:w-1/2 mx-auto pt-8 pb-3 justify-evenly' role='footer'>
 				<ul className="flex flex-col">
 					<li>
@@ -45,7 +45,7 @@ function Footer() {
 				</ul>
 			</div>
 			<div className='mt-2 text-xs text-center'>Copyright © 2020</div>
-		</div>
+		</footer>
 	)
 }
 

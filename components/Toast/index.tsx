@@ -1,17 +1,15 @@
-import PropTypes from "prop-types"
 import clsx from 'clsx'
 
-Toast.propTypes = {
-	text: PropTypes.string,
-	type: PropTypes.number
+type Props = {
+	text: string,
+	type: number
 }
 
 Toast.defaultProps = {
 	text: "Success",
 }
 
-function Toast(props) {
-	const { text, type } = props
+function Toast({ text,type } : Props) {
 	return (
 		<div
 			className={clsx(

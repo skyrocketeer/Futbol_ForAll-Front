@@ -3,18 +3,21 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import clsx from 'clsx'
 
+type Menu = {
+	name: string,
+	link: string
+}
 
-function Navbar(props) {
+function Navbar({ isOpen }: { isOpen: boolean }) {
 	const router = useRouter()
-	const { isOpen } = props
 
-	const menus = [
+	const menus: Array<Menu> = [
 		{ name: "Stadium", link: "/stadiums" },
 		{ name: "Teams", link: "/posts" },
 		{ name: "MyTeams", link: "/posts" },
 	]
 
-	const renderMenu = () => {
+	const renderMenu = (): JSX.Element => {
 		return (
 			<div className='sm:flex sm:justify-evenly text-neon-main font-bold sm:w-3/5'>
 				{menus.map((el, index) => (
@@ -26,7 +29,7 @@ function Navbar(props) {
 		)
 	}
 
-	const renderButton = () =>
+	const renderButton = (): JSX.Element =>
 		window.innerWidth >= 640 ?
 			<div className='text-center flex'>
 				<button className='text-neon-main border border-neon-main hover:bg-gray-800 px-3 mr-3 rounded-full'>

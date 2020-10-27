@@ -55,13 +55,13 @@ function HomePage() {
 
 	const renderContent = () => {
 		return (
-			<div className='block sm:grid sm:grid-flow-row-dense sm:grid-cols-3 md:grid-cols-4 sm:grid-rows-2 sm:gap-4'>
+			<div className='block sm:grid sm:grid-flow-row-dense sm:grid-cols-2 md:grid-cols-3 sm:gap-4'>
 				{cards.map(card => (
 					<div
 						className='rounded overflow-hidden shadow-lg mb-4 mx-2'
 						key={card.title}
 					>
-						<img className='h-32 w-full object-cover' src={`/images/${card.img}`} />
+						<img className='h-48 w-full object-cover' src={`/images/${card.img}`} />
 						<div className='px-6 py-2'>
 							<div className='font-bold text-xl mb-2'>{card.title}</div>
 							<p className='text-gray-700 text-base line-clamp'>
@@ -72,7 +72,7 @@ function HomePage() {
 							{card.tags.map(tag => (
 								<span
 									key={tag}
-									className='inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2'
+									className='inline-block bg-teal-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-800 mr-2 mb-2'
 								>
 									{tag}
 								</span>
