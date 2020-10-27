@@ -7,7 +7,7 @@ import style from './verify.module.css'
 import clsx from 'clsx'
 import axios from "axios"
 
-function VerifyAccount(): JSX.Element {
+function VerifyAccount() {
 	const router = useRouter()
 	const [secs, setTime] = useState<number>(59)
 	const [mins, setMin] = useState<number>(2)
@@ -150,6 +150,7 @@ function VerifyAccount(): JSX.Element {
 						</div>
 						
 						<div className='flex flex-wrap w-full justify-center'>
+							{/* @ts-ignore */}
 							{Array.from({ length: 6 }, () => "").map( (el, index) => {
 								return (
 									<TokenInput
