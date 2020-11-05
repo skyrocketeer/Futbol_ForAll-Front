@@ -34,7 +34,7 @@ module.exports = {
 			},
 			animation: {
 				...animation,
-				popUp: "fadein 1.5s, fadeout 0.5s 3s",
+				popUp: "fadein 0.5s, fadeout 0.5s 1s",
 			},
 			keyframes: {
 				fadein: {
@@ -66,6 +66,9 @@ module.exports = {
 		opacity: ["responsive", "hover"],
 	},
 	plugins: [
+		require('@tailwindcss/ui')({
+      layout: 'sidebar',
+    }),
 		plugin(function ({ addUtilities }) {
 			// Add your custom styles here
 			const newUtil = {
@@ -83,6 +86,21 @@ module.exports = {
 					overflow: "hidden",
 					"text-overflow": "ellipsis",
 				},
+				".avatar-xs": {
+					borderRadius: "50%",
+					width: "50px",
+					height: "50px",
+				},
+				".avatar-sm": {
+					borderRadius: "50%",
+					width: "120px",
+					height: "120px",
+				},
+				".avatar-md": {
+					borderRadius: "50%",
+					width: "150px",
+					height: "150px",
+				}
 			}
 			addUtilities(newUtil)
 		}),
