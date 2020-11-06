@@ -30,6 +30,24 @@ button:focus {
 	outline: transparent;
 }
 
+.fade-enter {
+  opacity: 0;
+	z-index: 1;
+	transform: scale(0.80);
+}
+.fade-enter-active {
+	opacity: 1;
+	transform: scale(1);
+  transition: opacity 300ms;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
 @import "tailwindcss/utilities";
 
 @font-face {

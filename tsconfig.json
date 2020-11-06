@@ -2,8 +2,13 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "checkJs": true,
     "jsx": "preserve",
-    "lib": ["dom", "dom.iterable","esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -21,10 +26,18 @@
     "isolatedModules": true,
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["components/*"],
-      "@styles/*": ["styles/*"],
-      "@assets/*": ["public/*"],
-      "@pages/*": ["pages/*"],
+      "@components/*": [
+        "components/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@assets/*": [
+        "public/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
     }
   },
   "exclude": [

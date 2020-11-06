@@ -8,7 +8,7 @@ export default function Layout({
 	content,
 	title
 }: {
-	content: React.ReactNode,
+	content: JSX.Element,
 	title? : String
 }) {
 	return (

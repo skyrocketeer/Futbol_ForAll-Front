@@ -32,34 +32,6 @@ module.exports = {
 				96: "24rem",
 				128: "32rem",
 			},
-			animation: {
-				...animation,
-				popUp: "fadein 0.5s, fadeout 0.5s 1s",
-			},
-			keyframes: {
-				fadein: {
-					from: {
-						right: "-165px",
-						opacity: 0,
-					},
-					to: {
-						top: "300px",
-						right: 0,
-						opacity: 1,
-					},
-				},
-				fadeout: {
-					from: {
-						top: "300px",
-						right: 0,
-						opacity: 1,
-					},
-					to: {
-						right: "-165px",
-						opacity: 0,
-					},
-				},
-			},
 		},
 	},
 	variants: {
