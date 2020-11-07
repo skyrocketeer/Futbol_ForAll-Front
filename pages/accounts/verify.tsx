@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect, useReducer } from "react"
 import TokenInput from "@components/Input/TokenInput"
-import Toast from "@components/Notification"
+import Notification from "@components/Notification"
 import Layout from "@components/Layout/main"
 import style from './verify.module.css'
 import clsx from 'clsx'
 import axios from "axios"
+import Transition from "@components/Transition"
+import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 
 function VerifyAccount() {
 	const router = useRouter()
@@ -162,7 +164,7 @@ function VerifyAccount() {
 					<div className='w-2/3 mx-auto mt-6 pt-3'>
 						<button 
 							className={clsx(
-								'flex mx-auto w-3/4 mx-6 mb-3 text-white font-bold py-1 px-6 shadow-lg rounded-full',
+								'flex w-3/4 mx-6 mb-3 text-white font-bold py-1 px-6 shadow-lg rounded-full',
 								isValidated ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-400 cursor-default' 
 							)}
 							onClick={handleSubmit}
@@ -184,9 +186,22 @@ function VerifyAccount() {
 					</div>
 				</div>
 				
-				{!showToast ? null :  toastType == 1 ? 
-					<Toast type={1} text="Successfully verified"/> : <Toast type={2} text="Invalid OTP"/>
-				}
+				<Transition appeared={showToast && toastType === 1}>  
+          <Notification 
+            text='Hooray! Successfully created' 
+            icon={faCheckCircle} 
+            color="#44C997"
+            textColor="text-green-400"
+          /> 
+        </Transition>
+				<Transition appeared={showToast && toastType === 2}> 
+          <Notification 
+            text='Sorry! Bad credentials' 
+            icon={faExclamationCircle} 
+            color="#e53e3e"
+            textColor="text-red-600"
+          />
+        </Transition>
 			</>
 		)
 	}
