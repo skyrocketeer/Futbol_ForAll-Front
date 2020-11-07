@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect, useReducer } from "react"
 import TokenInput from "@components/Input/TokenInput"
-import Toast from "@components/Toast"
+import Toast from "@components/Notification"
 import Layout from "@components/Layout/main"
 import style from './verify.module.css'
 import clsx from 'clsx'

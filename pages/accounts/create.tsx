@@ -10,7 +10,7 @@ import Link from "next/link"
 import DefaultLayout from "@components/Layout/default"
 import Spinning from "@components/Progress/Spinning"
 import SocialSignInButton from "@components/Button/Social"
-import Toast from "@components/Toast"
+import Toast from "@components/Notification"
 // import Modal from "@components/Modal/LoginForm"
 
 interface RegisterFormInput {
