@@ -10,7 +10,9 @@ import Link from "next/link"
 import DefaultLayout from "@components/Layout/default"
 import Spinning from "@components/Progress/Spinning"
 import SocialSignInButton from "@components/Button/Social"
-import Toast from "@components/Toast"
+import Notification from "@components/Notification"
+import Transition from "@components/Transition"
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons"
 // import Modal from "@components/Modal/LoginForm"
 
 interface RegisterFormInput {
@@ -193,7 +195,14 @@ function CreateAccount() {
 							</button>
 						)}
 				</form>
-				{states.success && <Toast text='Hooray! Successfully created' type={1} />}
+				<Transition appeared={states.success}>  
+          <Notification 
+            text='Hooray! Successfully created' 
+            icon={faCheckCircle} 
+            color="#44C997"
+            textColor="text-green-400"
+          /> 
+        </Transition>
 			</>
 		)
 	}
