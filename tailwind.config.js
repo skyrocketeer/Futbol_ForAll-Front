@@ -44,13 +44,6 @@ module.exports = {
 		plugin(function ({ addUtilities }) {
 			// Add your custom styles here
 			const newUtil = {
-				".toast": {
-					"text-align": "center" /* Centered text */,
-					position: "fixed" /* Sit on top of the screen */,
-					"z-index": 5 /* Add a z-index if needed */,
-					right: "0px",
-					top: "300px" /* 30px from the bottom */,
-				},
 				".line-clamp": {
 					display: "-webkit-box",
 					"-webkit-line-clamp": 3,
