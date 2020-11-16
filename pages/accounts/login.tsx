@@ -57,7 +57,7 @@ function LoginForm() {
             reset()
             
             // set access token
-            localStorage.setItem('access_token', res.data.access_token)
+            localStorage.setItem('access_token', res.data.token)
 
             setSuccess(true)
             setTimeout(() => { setSuccess(false) }, 200)
@@ -110,14 +110,14 @@ function LoginForm() {
           { errors.password && <div className='text-red-600 text-sm mt-2'>{errors.password.message}</div> }
 
           <div className="mt-6 flex items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex flex-auto flex-wrap items-center">
               <input id="remember_me" type="checkbox" className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out" />
               <label htmlFor="remember_me" className="ml-2 block text-sm leading-5 text-gray-900">
                 Remember me
               </label>
             </div>
 
-            <div className="text-sm leading-5">
+            <div className="flex-auto flex-wrap text-sm leading-5">
               <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
                 Forgot your password?
               </a>
@@ -167,7 +167,7 @@ function LoginForm() {
   
 	function renderContent() {
 		return (
-			<div className='flex lg:justify-center sm:w-4/5 lg:w-3/5 mx-4 sm:mx-auto'>
+			<div className='flex lg:justify-center w-3/4 sm:w-4/5 mx-auto'>
 				<div className={clsx('hidden lg:block lg:w-2/5 lg:mt-16 lg:mr-5', style.form__height)}>
 					<div className='block'>
 						<Link href='/'>

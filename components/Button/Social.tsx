@@ -21,9 +21,9 @@ function SocialSignInButton({label, logo} : SocialSignInButton) {
 
 	return (
 		<div className='flex w-full py-2 border border-gray-400 text-gray-600 rounded-lg'>
-			<div className='ml-3'>{logoType(logo)}</div>
-			<div className='flex-1 my-auto text-sm'>
-				<span className="pl-28">{label}</span>
+			<div className='w-1/4 ml-3'>{logoType(logo)}</div>
+			<div className='w-3/4 pl-2 sm:pl-6 md:pl-10 my-auto text-sm'>
+				<span className="">{label}</span>
 			</div>
 		</div>
 	)
