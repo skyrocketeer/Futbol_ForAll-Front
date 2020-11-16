@@ -1,5 +1,5 @@
 import axios from "axios"
-;(axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE),
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE,
 	// declare a request interceptor
 	axios.interceptors.request.use(
 		config => {

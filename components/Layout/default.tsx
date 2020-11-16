@@ -33,7 +33,7 @@ export default function Layout({
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<div id='main-app' className='bg-gray-facebook min-h-screen flex flex-col'>
-				<main className='md:w-1/2 lg:w-3/5 py-10 sm:mb-6 sm:mx-auto flex-grow'>
+				<main className='md:w-1/2 lg:w-3/5 sm:w-2/3 py-10 sm:mb-6 sm:mx-auto flex-grow'>
 					{content}
 				</main>
 				<Footer />
