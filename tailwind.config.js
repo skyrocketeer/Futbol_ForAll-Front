@@ -38,9 +38,6 @@ module.exports = {
 		opacity: ["responsive", "hover"],
 	},
 	plugins: [
-		require('@tailwindcss/ui')({
-      layout: 'sidebar',
-    }),
 		plugin(function ({ addUtilities }) {
 			// Add your custom styles here
 			const newUtil = {
