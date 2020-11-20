@@ -72,7 +72,7 @@ function HomePage() {
 							{card.tags.map(tag => (
 								<span
 									key={tag}
-									className='inline-block bg-teal-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-800 mr-2 mb-2'
+									className='inline-block bg-blue-100 text-indigo-500 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2'
 								>
 									{tag}
 								</span>
