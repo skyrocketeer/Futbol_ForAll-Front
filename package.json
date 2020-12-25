@@ -17,6 +17,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
     "@hookform/resolvers": "^1.0.0",
+    "@react-keycloak/ssr": "^3.0.0",
+    "@types/react-transition-group": "^4.4.0",
     "axios": "^0.19.2",
     "clsx": "^1.1.1",
     "cookie": "^0.4.1",
@@ -25,10 +27,8 @@
     "react": "^16.8",
     "react-dom": "^16.8",
     "react-hook-form": "^6.9.5",
-    "react-transition-group": "^2.2.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
-    "yup": "^0.29.3",
-    "@react-keycloak/ssr": "^3.0.0"
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@types/cookie": "^0.4.0",
