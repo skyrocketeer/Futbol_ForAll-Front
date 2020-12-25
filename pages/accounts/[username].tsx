@@ -3,7 +3,6 @@ import {Sizes, Avatar} from "@components/Avatar"
 import Layout from "@components/Layout/main"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faUsers, faHeart, faCog, faPaperPlane , faMapMarkerAlt, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
-// import { getAllPostIds, getPostData } from '../../lib/post'
 
 export default function AccountPage() {
   const menuItems = [
@@ -58,16 +57,6 @@ export default function AccountPage() {
   }
 
   const renderContent = () => 
-  /* for api call
-  <div>
-    {postData.title}
-    test
-    <br />
-    test 2
-    {postData.content}
-  </div>
-  */
-
   /* for demo */
   <div className='flex'>
     <div className="w-1/5 space-y-6">
@@ -126,7 +115,9 @@ export default function AccountPage() {
   </div>
 
   return (
-    <Layout content={renderContent()} />
+    <Layout>
+      { renderContent() }
+    </Layout>
   )
 }
 

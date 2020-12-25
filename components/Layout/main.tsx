@@ -4,7 +4,7 @@ import Footer from "@components/Footer"
 
 export const siteTitle = 'Next.js website'
 
-export default function Layout({ children, title }:{ children: JSX.Element, title? : String }) {
+export default function Layout({ children, title }:{ children: React.ReactNode, title? : String }) {
 	return (
 		<>
 			<Head>

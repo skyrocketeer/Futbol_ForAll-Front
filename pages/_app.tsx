@@ -10,7 +10,6 @@ import type { IncomingMessage } from 'http'
 
 import cookie from 'cookie'
 import { SSRKeycloakProvider, SSRCookies } from '@react-keycloak/ssr'
-import { Cookies } from "@types"
 
 const keycloakConfig = {
   url: process.env.NEXT_PUBLIC_AUTH_SERVER_DOMAIN || '',
@@ -19,7 +18,11 @@ const keycloakConfig = {
   redirectUri: process.env.NEXT_FRONT_DOMAIN || '',
 }
 
-function MyApp({ Component, pageProps, cookies }: AppProps & AppInitialProps & Cookies) {
+type Cookies = {
+  [key: string]: string
+}
+
+function MyApp({ Component, pageProps, cookies }: AppProps & Cookies) {
   return(
     <SSRKeycloakProvider
       keycloakConfig={keycloakConfig}

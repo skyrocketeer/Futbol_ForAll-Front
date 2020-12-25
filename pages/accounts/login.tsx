@@ -200,7 +200,7 @@ function LoginForm() {
 		)
 	}
 
-	return <DefaultLayout title={title} content={renderContent()} />
+	return <DefaultLayout title={title}>{renderContent()}</DefaultLayout>
 }
 
 export default LoginForm

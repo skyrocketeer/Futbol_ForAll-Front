@@ -7,7 +7,7 @@ import * as yup from "yup"
 import clsx from "clsx"
 import axios from "axios"
 import Link from "next/link"
-import DefaultLayout from "@components/Layout/default"
+import Layout from "@components/Layout/main"
 import Spinning from "@components/Progress/Spinning"
 import SocialSignInButton from "@components/Button/Social"
 import Notification from "@components/Notification"
@@ -207,42 +207,39 @@ function CreateAccount() {
 		)
 	}
 
-	function renderContent() {
-		return (
-			<div className='md:flex'>
-				<div className='hidden lg:block lg:w-2/5'>
-					<div className='block'>
-						<Link href='/'>
-							<a>
-								<img
-									src='/logo.jpg'
-									alt='starboy-logo'
-									className='mx-auto w-24 h-16'
-								/>
-							</a>
-						</Link>
-					</div>
-					<div className='text-lg text-center mt-5 font-extrabold'>
-						ĐĂNG KÝ TÀI KHOẢN MỚI
-					</div>
+	const renderContent = () =>
+		<div className='md:flex'>
+			<div className='hidden lg:block lg:w-2/5'>
+				<div className='block'>
+					<Link href='/'>
+						<a>
+							<img
+								src='/logo.jpg'
+								alt='starboy-logo'
+								className='mx-auto w-24 h-16'
+							/>
+						</a>
+					</Link>
 				</div>
-				<div className='w-4/5 lg:w-2/5 bg-white rounded-lg py-4 px-5 shadow-lg mx-auto lg:mx-0'>
-					<div className='lg:hidden md:block text-center text-md font-extrabold mb-3'>
-						ĐĂNG KÝ TÀI KHOẢN MỚI
-					</div>
-					<RegisterForm />
-					<div className='divider__line-through mt-3'>hoặc</div>
-					<div className={style.socialBtn}>
-						<SocialSignInButton logo='facebook' label='Đăng kí bằng Facebook' />
-						<SocialSignInButton logo='google' label='Đăng kí bằng Gmail' />
-						<SocialSignInButton logo='phone' label='Đăng kí bằng số điện thoại' />
-					</div>
+				<div className='text-lg text-center mt-5 font-extrabold'>
+					ĐĂNG KÝ TÀI KHOẢN MỚI
 				</div>
 			</div>
-		)
-	}
+			<div className='w-4/5 lg:w-2/5 bg-white rounded-lg py-4 px-5 shadow-lg mx-auto lg:mx-0'>
+				<div className='lg:hidden md:block text-center text-md font-extrabold mb-3'>
+					ĐĂNG KÝ TÀI KHOẢN MỚI
+				</div>
+				<RegisterForm />
+				<div className='divider__line-through mt-3'>hoặc</div>
+				<div className={style.socialBtn}>
+					<SocialSignInButton logo='facebook' label='Đăng kí bằng Facebook' />
+					<SocialSignInButton logo='google' label='Đăng kí bằng Gmail' />
+					<SocialSignInButton logo='phone' label='Đăng kí bằng số điện thoại' />
+				</div>
+			</div>
+		</div>
 
-	return <DefaultLayout title={title} content={renderContent()} />
+	return <Layout> {renderContent()} </Layout>
 }
 
 export default CreateAccount

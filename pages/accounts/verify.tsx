@@ -206,7 +206,7 @@ function VerifyAccount() {
 		)
 	}
 
-	return <Layout title='Verify account' content={renderOTPForm()} />
+	return <Layout title='Verify account'> { renderOTPForm() } </Layout>
 }
 
 export default VerifyAccount
