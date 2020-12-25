@@ -4,13 +4,7 @@ import Footer from "@components/Footer"
 
 export const siteTitle = 'Next.js website'
 
-export default function Layout({
-	content,
-	title
-}: {
-	content: JSX.Element,
-	title? : String
-}) {
+export default function Layout({ children, title }:{ children: JSX.Element, title? : String }) {
 	return (
 		<>
 			<Head>
@@ -35,7 +29,7 @@ export default function Layout({
 			</Head>
 			<div id='main-app' className="flex flex-col min-h-screen">
 				<Header />
-				<main className='mx-4 sm:w-4/5 sm:mx-auto my-10 flex-grow'>{content}</main>
+				<main className='xs:w-full sm:w-4/5 xs:mx-0 sm:mx-auto my-10 flex-grow'>{children}</main>
 				<Footer />
 			</div>
 		</>

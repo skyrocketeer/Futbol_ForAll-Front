@@ -3,13 +3,7 @@ import Footer from "@components/Footer"
 
 export const siteTitle = 'Next.js website'
 
-export default function Layout({
-	content,
-	title
-}: {
-	content: React.ReactNode,
-	title? : String
-}) {
+export default function Layout({ children, title }: { children: JSX.Element, title? : String }) {
 	return (
 		<>
 			<Head>
@@ -34,7 +28,7 @@ export default function Layout({
 			</Head>
 			<div id='main-app' className='bg-gray-facebook min-h-screen flex flex-col'>
 				<main className='md:w-1/2 lg:w-3/5 sm:w-2/3 py-10 sm:mb-6 sm:mx-auto flex-grow'>
-					{content}
+					{children}
 				</main>
 				<Footer />
 			</div>

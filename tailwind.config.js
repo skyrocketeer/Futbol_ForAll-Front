@@ -12,6 +12,9 @@ module.exports = {
 			serif: ["Gilroy"],
 		},
 		extend: {
+			screens: {
+				'xs': {'max': '639px'}
+			},
 			colors: {
 				red: {
 					...colors.red,

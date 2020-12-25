@@ -38,6 +38,12 @@
       "@pages/*": [
         "pages/*"
       ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@plugins/*": [
+        "plugins/*"
+      ]
     }
   },
   "exclude": [
